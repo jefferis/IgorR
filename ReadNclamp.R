@@ -7,13 +7,9 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 	# Select text fields only
 	# cat("orig date field is:",x$vars$FileDate)
 	# remove any commas and rationalise spaces
-	exptDate=gsub("[, ]+"," ",x$vars$FileDate)
-	exptDate=strptime(exptDate,format="%a %b %d %Y") # "Thu Oct 25 2007"
-	if(is.na(exptDate))
-		exptDate=strptime(x$vars$FileDate, format = "%a %e %b %Y") # "Thu 04 Oct 2007"
-	if(is.na(exptDate)) stop("Unable to parse date format: ",x$vars$FileDate)
-	exptDateStr=format(exptDate)
 	
+	exptDate<-.ParseDate(x$vars$FileDate)
+	exptDateStr=format(exptDate)
 	cat("date is:",exptDateStr)
 	
 	# Do we have a table representation of the data (in waves) ?
@@ -46,4 +42,14 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 		logfiles[[i]]<<-try(ReadNclampLogTable(logfilenames[i]),...)
 	}
 	logfilenames
+}
+
+.ParseDate<-function(d)
+{
+	exptDate=gsub("[, ]+"," ",d)
+	exptDate=strptime(exptDate,format="%a %b %d %Y") # "Thu Oct 25 2007"
+	if(is.na(exptDate))
+		exptDate=strptime(d, format = "%a %e %b %Y") # "Thu 04 Oct 2007"
+	if(is.na(exptDate)) stop("Unable to parse date format: ",d)
+	exptDate
 }
