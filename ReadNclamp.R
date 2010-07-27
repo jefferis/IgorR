@@ -53,3 +53,16 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 	if(is.na(exptDate)) stop("Unable to parse date format: ",d)
 	exptDate
 }
+
+ReadSweepFile<-function(f){
+	s=ReadIgorPackedExperiment(f)
+	chosenFields=c("FileFormat","NumWaves","SamplesPerWave","SampleInterval",
+		"NumChannels","FileName","FileDate","FileTime")
+	
+	summaryFields=s$vars[chosenFields]
+	listnames=names(s)[sapply(s,class)=="list"]
+	possStimuli=setdiff(listnames, c("vars","Notes",grep("^Chan[A-Z]$",listnames,val=T)))
+	if(length(possStimuli)!=1) stop("unable to identify stimulus protocol")
+	ProtocolName=possStimuli[1]
+	ProtocolName
+}
