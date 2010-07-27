@@ -55,6 +55,8 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 }
 
 ReadSweepFile<-function(f){
+	# function to extract key data from Sweep File 
+	# e.g. for import into Physiology database
 	s=ReadIgorPackedExperiment(f)
 	chosenFields=c("FileFormat","NumWaves","SamplesPerWave","SampleInterval",
 		"NumChannels","FileName","FileDate","FileTime")
@@ -64,5 +66,9 @@ ReadSweepFile<-function(f){
 	possStimuli=setdiff(listnames, c("vars","Notes",grep("^Chan[A-Z]$",listnames,val=T)))
 	if(length(possStimuli)!=1) stop("unable to identify stimulus protocol")
 	ProtocolName=possStimuli[1]
-	ProtocolName
+	chosenProtocolFields=c("AcqMode","WaveLength","SampleInterval","SamplesPerWave",
+		"NumStimWaves","InterStimTime","NumStimReps","InterRepTime","StimRate",
+		"RepRate","TotalTime","FileName","CurrentFile")
+	stimFields=s[[ProtocolName]][["vars"]][chosenProtocolFields]
+	return(list(summaryFields,stimFields))
 }
