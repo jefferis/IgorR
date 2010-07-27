@@ -6,9 +6,12 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 #	WaveFields	
 	# Select text fields only
 	# cat("orig date field is:",x$vars$FileDate)
-	exptDate=strptime(x$vars$FileDate,format="%a, %b %d %Y")
+	# remove any commas and rationalise spaces
+	exptDate=gsub("[, ]+"," ",x$vars$FileDate)
+	exptDate=strptime(exptDate,format="%a %b %d %Y") # "Thu Oct 25 2007"
 	if(is.na(exptDate))
-		exptDate=strptime(x$vars$FileDate, format = "%a,%e %b %Y")
+		exptDate=strptime(x$vars$FileDate, format = "%a %e %b %Y") # "Thu 04 Oct 2007"
+	if(is.na(exptDate)) stop("Unable to parse date format: ",x$vars$FileDate)
 	exptDateStr=format(exptDate)
 	
 	cat("date is:",exptDateStr)
