@@ -146,10 +146,16 @@ ReadIgorBinary<-function(con,Verbose=FALSE,ReturnTimeSeries=FALSE,MakeWave=FALSE
 	# readBin can only read signed shorts or bytes,
 	# so must add 2^32 to read as unsigned long	
 	i=as.numeric(readBin(con,endian=endian,what=integer(),size=4))+2^32
-	i=i+as.numeric(ISOdate(1904,1,1,hour=0,tz=""))
-	class(i)<-"POSIXct"
+	i=.convertIgorDate(i)
 	i
 }
+
+.convertIgorDate<-function(dateval){
+	dateval=dateval+as.numeric(ISOdate(1904,1,1,hour=0,tz=""))
+	class(dateval)<-"POSIXct"
+	dateval
+}
+
 .ReadPackedHeader<-function(con,endian){
 	recordType=readBin(con,size=2,what=integer(),signed=FALSE,endian=endian)
 	version=readBin(con,size=2,what=integer(),endian=endian)
