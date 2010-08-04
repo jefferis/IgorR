@@ -58,6 +58,10 @@ ReadSweepFile<-function(f){
 	# function to extract key data from Sweep File 
 	# e.g. for import into Physiology database
 	s=ReadIgorPackedExperiment(f)
+	
+	fileinfo=file.info(f)
+	extraFields=list(FilePath=f,FileSize=fileinfo["size"],FileMTime=fileinfo["mtime"],MD5=md5sum(f))
+	
 	chosenFields=c("FileFormat","NumWaves","SamplesPerWave","SampleInterval",
 		"NumChannels","FileName","FileDate","FileTime")
 	
@@ -70,5 +74,17 @@ ReadSweepFile<-function(f){
 		"NumStimWaves","InterStimTime","NumStimReps","InterRepTime","StimRate",
 		"RepRate","TotalTime","FileName","CurrentFile")
 	stimFields=s[[ProtocolName]][["vars"]][chosenProtocolFields]
-	return(list(summaryFields,stimFields))
+	names(stimFields)<-paste("Stim",chosenProtocolFields,sep="")
+	return(c(extraFields,summaryFields,stimFields))
+}
+
+SweepFilesToDataFrame<-function(ff){
+	ll=lapply(ff, ReadSweepFile)
+	lengths=sapply(ll,length)
+	if(any(lengths!=lengths[1]))
+		stop("Heterogeneous results from ReadSweepFile")
+	# df=as.data.frame(ll[1],stringsAsFactors=FALSE)
+	# if(length(ll)==1) return(df)
+	# ll=ll[-1]
+	do.call(rbind,lapply(ll,as.data.frame,stringsAsFactors=FALSE))
 }
