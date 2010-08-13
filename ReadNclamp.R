@@ -88,3 +88,35 @@ SweepFilesToDataFrame<-function(ff){
 	# ll=ll[-1]
 	do.call(rbind,lapply(ll,as.data.frame,stringsAsFactors=FALSE))
 }
+
+UpdateSweepDataFrame<-function(foldername,outfile=NULL,action=c("update","force"),DryRun=FALSE){
+	action=match.arg(action)
+	foldername=path.expand(foldername) # replace ~ by full path if necessary
+	if(is.null(outfile)){
+		outfile=file.path(foldername,paste(basename(foldername),sep=".","csv"))
+	}
+	infiles=dir(foldername,patt="_[0-9]+\\.pxp$",full=T)
+	if(!file.exists(outfile)){
+		# we need to process all infiles
+		newinfiles=infiles
+	} else {
+		intimes=file.info(infiles)$mtime
+		outtime=file.info(outfile)$mtime
+		newinfiles=infiles[intimes>outtime]
+	}
+	if(length(newinfiles)>0){
+		if(DryRun) {
+			cat("Would process the following files:\n",sep="",paste(newinfiles,collapse="\n"))
+		} else {
+			newdf=SweepFilesToDataFrame(newinfiles)
+			if(file.exists(outfile)){
+				# read in the old data frame, and overwrite updated rows/append new rows
+				olddf=read.csv(outfile)
+				olddf[rownames(newdf),]=newdf
+				newdf=olddf
+			}
+			write.csv(newdf,outfile)
+		}
+		invisible(TRUE)
+	}
+}
