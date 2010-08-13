@@ -60,9 +60,9 @@ ReadSweepFile<-function(f){
 	s=ReadIgorPackedExperiment(f)
 	
 	fileinfo=file.info(f)
-	extraFields=list(FilePath=f,FileSize=fileinfo["size"],FileMTime=fileinfo["mtime"],MD5=md5sum(f))
+	extraFields=list(FilePath=f,Folder=basename(dirname(f)),FileSize=fileinfo["size"],FileMTime=fileinfo["mtime"],FileMD5=md5sum(f))
 	
-	chosenFields=c("FileFormat","NumWaves","SamplesPerWave","SampleInterval",
+	chosenFields=c("FileFormat","NumWaves",
 		"NumChannels","FileName","FileDate","FileTime")
 	
 	summaryFields=s$vars[chosenFields]
