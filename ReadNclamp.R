@@ -111,7 +111,8 @@ UpdateSweepDataFrame<-function(foldername,outfile=NULL,action=c("update","force"
 			newdf=SweepFilesToDataFrame(newinfiles)
 			if(file.exists(outfile)){
 				# read in the old data frame, and overwrite updated rows/append new rows
-				olddf=read.csv(outfile)
+				olddf=read.csv(outfile,stringsAsFactors=FALSE)
+				rownames(olddf)=olddf[,1] # set the rownames to first col which should be FilePath
 				olddf[rownames(newdf),]=newdf
 				newdf=olddf
 			}
