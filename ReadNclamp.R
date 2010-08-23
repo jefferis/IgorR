@@ -64,19 +64,22 @@ ReadSweepFile<-function(f){
 		FileSize=fileinfo$size,FileMTime=fileinfo$mtime,FileMD5=md5sum(f))
 	
 	chosenFields=c("FileFormat","NumWaves",
-		"NumChannels","FileName","FileDate","FileTime")
+		"NumChannels","FileName","FileDate","FileTime","WavePrefix","AcqMode")
 	
 	summaryFields=s$vars[chosenFields]
 	listnames=names(s)[sapply(s,class)=="list"]
 	possStimuli=setdiff(listnames, c("vars","Notes",grep("^Chan[A-Z]$",listnames,val=T)))
 	if(length(possStimuli)!=1) stop("unable to identify stimulus protocol")
 	ProtocolName=possStimuli[1]
-	chosenProtocolFields=c("AcqMode","WaveLength","SampleInterval","SamplesPerWave",
+	chosenProtocolFields=c("WaveLength","SampleInterval","SamplesPerWave",
 		"NumStimWaves","InterStimTime","NumStimReps","InterRepTime","StimRate",
-		"RepRate","TotalTime","FileName","CurrentFile")
+		"RepRate","TotalTime","CurrentFile")
 	stimFields=s[[ProtocolName]][["vars"]][chosenProtocolFields]
 	names(stimFields)<-paste("Stim",chosenProtocolFields,sep="")
-	return(c(extraFields,summaryFields,stimFields))
+	rval=c(extraFields,summaryFields,ProtocolName=ProtocolName,stimFields)
+	nullfields=sapply(rval,is.null)
+	rval[nullfields]=NA
+	return(rval)
 }
 
 SweepFilesToDataFrame<-function(ff){
