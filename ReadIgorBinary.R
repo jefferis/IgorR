@@ -73,9 +73,9 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 	if(Verbose) cat("version = ",version,"endian = ",endian,"\n")
 	
 	if(version==5) {
-		rval=ReadIgorBinary.V5(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
+		rval=.ReadIgorBinary.V5(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
 	} else if(version==2){
-		rval=ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
+		rval=.ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
 	}
 	else stop(paste("Unable to read from Igor Binary File:",summary(wavefile)$description,"with version:",version))
 
@@ -350,7 +350,7 @@ ReadIgorPackedExperiment<-function(con,endian = .Platform$endian,Verbose=FALSE,S
 }
 
 
-ReadIgorBinary.V2<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
+.ReadIgorBinary.V2<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
 	myread=function(what="integer",size=4,...) readBin(con,endian=endian,what=what,size=size,...)
 	# File pointer should be positioned at the start of the header
 	# this should be 2 bytes into the wave data 
@@ -434,7 +434,7 @@ ReadIgorBinary.V2<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,
 	else return (WaveData)
 }
 
-ReadIgorBinary.V5<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
+.ReadIgorBinary.V5<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
 	# File pointer should be positioned at the start of the header
 	# this should be 2 bytes into the wave data 
 	# (ie after endian and version bytes).  Store that position:
