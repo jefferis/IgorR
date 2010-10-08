@@ -81,7 +81,10 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 
 	# makes a wave with a specified name in the user environment
 	if(MakeWave){
-		WaveName=attr(rval,"WaveHeader")$WaveName
+		OriginalWaveName=attr(rval,"WaveHeader")$WaveName
+		WaveName=make.names(OriginalWaveName)
+		if(WaveName!=OriginalWaveName)
+			warning("Had to change wave name from ",OriginalWaveName," to ",WaveName,"to keep R happy")
 		assign(WaveName,rval,inherits=TRUE)
 		invisible(WaveName)
 	} else invisible(rval)
