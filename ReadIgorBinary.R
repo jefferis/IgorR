@@ -90,10 +90,79 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 	} else invisible(rval)
 }
 
+ReadIgorPackedExperiment<-function(pxpfile,endian = .Platform$endian,Verbose=FALSE,StructureOnly=FALSE,regex,...){
+	require(bitops)
+	if (is.character(pxpfile)) {
+		# NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
+		# in the mac or windows-1252 encodings
+		pxpfile <- file(pxpfile, "rb",encoding="LATIN1")
+		on.exit(close(pxpfile))
+	}
+	filename=summary(pxpfile)$description
+	
+	Verbose=ifelse(Verbose==1,TRUE,Verbose)
+	Verbose=ifelse(Verbose==0,FALSE,Verbose)
+	
+	# Check if this file needs to be byte swapped
+	firstShort=readBin(pxpfile,"integer",1,size=2)
+	firstShort=bitAnd(firstShort,0x7FFF)
+	if (bitAnd(firstShort,0xFF00) != 0) endian="swap"
+	
+	root=list() # we will store data here
+	currentNames="root"
+	recordStartPos=0; fileSize=file.info(filename)$size
+	while(recordStartPos<fileSize){
+		seek(pxpfile,recordStartPos)
+		ph=.ReadPackedHeader(pxpfile,endian)
+		if(Verbose) cat("recordStartPos =",recordStartPos,",Record type =",ph$recordType,
+					"of length =",ph$numDataBytes,"\n")
+		
+		recordStartPos=seek(pxpfile)+ph$numDataBytes
+		#if(!is.na(recTypeFuns[ph$recordType])) x=match.fun(recTypeFuns[ph$recordType])(pxpfile,endian)
+		if (ph$recordType==1){
+			# variables
+			vh=.ReadVarHeader(pxpfile,endian)
+			
+			vars=list()
+			if(vh$numSysVars>0) vars$sysVars=readBin(pxpfile,n=vh$numSysVars,size=4,what=numeric(),signed=TRUE,endian=endian)
+			if(vh$numUserVars>0) vars=c(vars,.ReadUserVar(pxpfile,endian,n=vh$numUserVars))
+			if(vh$numUserStrs>0) vars=c(vars,.ReadUserStr(pxpfile,endian,n=vh$numUserStrs),attr(vh,"version"))
+			if(Verbose) print(vh)
+			if(Verbose) print(vars)
+			el=paste(paste(currentNames,collapse="$"),sep="$","vars")
+			eval(parse(text=paste(el,"<-vars")))
+		} else if (ph$recordType==3){
+			# wave record; verbose made for wave reading if we are passed
+			# Verbose = 2
+			x=.ReadWaveRecord(pxpfile,endian,Verbose=ifelse(Verbose==2,TRUE,FALSE),...)
+			if(!is.null(x)){
+				if(is.null(attr(x,"WaveHeader")$WaveName)) {
+					# assume this is a wave name
+					el=paste(paste(currentNames,collapse="$"),sep="$",x)
+				} else {
+					el=paste(paste(currentNames,collapse="$"),sep="$",attr(x,"WaveHeader")$WaveName)
+				}
+				# store the record if required
+				if(missing(regex) || any( grep(regex,el) )){
+					eval(parse(text=paste(el,"<-x")))
+				}
+				if (Verbose) cat("el:",el,"\n")
+			}
+		} else if (ph$recordType==9){
+			# Open Data Folder
+			currentNames=c(currentNames,.ReadDataFolderStartRecord(pxpfile,endian))
+		} else if (ph$recordType==10){
+			# Close Data Folder
+			currentNames=currentNames[-length(currentNames)]
+		}		
+	}
+	invisible(root)
+}
+
 .DetermineIgorWaveType<-function(WaveHeader,endian=NULL){
 	if(endian=="big") WaveHeader$type=rev(WaveHeader$type)
 	WaveHeader$typeBits=as.integer(rawToBits(WaveHeader$type[1]))
-
+	
 	# // From IgorMath.h
 	#define NT_CMPLX 1			// Complex numbers.
 	#define NT_FP32 2			// 32 bit fp numbers.
@@ -102,7 +171,7 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 	#define NT_I16 	0x10		// 16 bit integer numbers. Requires Igor Pro 2.0 or later.
 	#define NT_I32 	0x20		// 32 bit integer numbers. Requires Igor Pro 2.0 or later.
 	#define NT_UNSIGNED 0x40	// Makes above signed integers unsigned. Requires Igor Pro 3.0 or later.
-
+	
 	# default is character ie text wave, which I assume to be ascii
 	what="character";size=1
 	if(WaveHeader$typeBits[6]) { what="integer"; size=4 }
@@ -160,6 +229,36 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 	dateval
 }
 
+# enum PackedFileRecordType {
+# 	kUnusedRecord = 0,
+# 	kVariablesRecord,		//  1: Contains system numeric variables (e.g., K0) and user numeric and string variables.
+# 	kHistoryRecord,			//  2: Contains the experiment's history as plain text.
+# 	kWaveRecord,			//  3: Contains the data for a wave
+# 	kRecreationRecord,		//  4: Contains the experiment's recreation procedures as plain text.
+# 	kProcedureRecord,		//  5: Contains the experiment's main procedure window text as plain text.
+# 	kUnused2Record, //6
+# 	kGetHistoryRecord,		//  7x6: Not a real record but rather, a message to go back and read the history text.
+# 	kPackedFileRecord,		//  8x7: Contains the data for a procedure file or notebook in a packed form.
+# 	kDataFolderStartRecord,	//  9x8: Marks the start of a new data folder.
+# 	kDataFolderEndRecord	// 10: Marks the end of a data folder.
+# 	
+# 	/*	Igor writes other kinds of records in a packed experiment file, for storing
+# 		things like pictures, page setup records, and miscellaneous settings. The
+# 		format for these records is quite complex and is not described in PTN003.
+# 		If you are writing a program to read packed files, you must skip any record
+# 		with a record type that is not listed above.
+# 	*/
+# };
+
+#' Read the a short record header from the current location in a PXP file
+#' 
+#' Note that the recordType will be one of the constants from Igor's
+#' enum PackedFileRecordType
+#' @param con an R connection to the file we are reading
+#' @param endian either little or big
+#' @returnType \code{list}
+#' @return a list containing information about the current record
+#' @author jefferis
 .ReadPackedHeader<-function(con,endian){
 	recordType=readBin(con,size=2,what=integer(),signed=FALSE,endian=endian)
 	version=readBin(con,size=2,what=integer(),endian=endian)
@@ -257,96 +356,6 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 		}
 	}
 	l
-}
-
-# enum PackedFileRecordType {
-# 	kUnusedRecord = 0,
-# 	kVariablesRecord,		//  1: Contains system numeric variables (e.g., K0) and user numeric and string variables.
-# 	kHistoryRecord,			//  2: Contains the experiment's history as plain text.
-# 	kWaveRecord,			//  3: Contains the data for a wave
-# 	kRecreationRecord,		//  4: Contains the experiment's recreation procedures as plain text.
-# 	kProcedureRecord,		//  5: Contains the experiment's main procedure window text as plain text.
-# 	kUnused2Record, //6
-# 	kGetHistoryRecord,		//  7x6: Not a real record but rather, a message to go back and read the history text.
-# 	kPackedFileRecord,		//  8x7: Contains the data for a procedure file or notebook in a packed form.
-# 	kDataFolderStartRecord,	//  9x8: Marks the start of a new data folder.
-# 	kDataFolderEndRecord	// 10: Marks the end of a data folder.
-# 	
-# 	/*	Igor writes other kinds of records in a packed experiment file, for storing
-# 		things like pictures, page setup records, and miscellaneous settings. The
-# 		format for these records is quite complex and is not described in PTN003.
-# 		If you are writing a program to read packed files, you must skip any record
-# 		with a record type that is not listed above.
-# 	*/
-# };
-
-ReadIgorPackedExperiment<-function(con,endian = .Platform$endian,Verbose=FALSE,StructureOnly=FALSE,regex,...){
-	require(bitops)
-	if (is.character(con)) {
-		# NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
-		# in the mac or windows-1252 encodings
-		con <- file(con, "rb",encoding="LATIN1")
-		on.exit(close(con))
-	}
-	filename=summary(con)$description
-	
-	Verbose=ifelse(Verbose==1,TRUE,Verbose)
-	Verbose=ifelse(Verbose==0,FALSE,Verbose)
-	
-	# Check if this file needs to be byte swapped
-	firstShort=readBin(con,"integer",1,size=2)
-	firstShort=bitAnd(firstShort,0x7FFF)
-	if (bitAnd(firstShort,0xFF00) != 0) endian="swap"
-		
-	root=list() # we will store data here
-	currentNames="root"
-	recordStartPos=0; fileSize=file.info(filename)$size
-	while(recordStartPos<fileSize){
-		seek(con,recordStartPos)
-		ph=.ReadPackedHeader(con,endian)
-		if(Verbose) cat("recordStartPos =",recordStartPos,",Record type =",ph$recordType,
-			"of length =",ph$numDataBytes,"\n")
-
-		recordStartPos=seek(con)+ph$numDataBytes
-		#if(!is.na(recTypeFuns[ph$recordType])) x=match.fun(recTypeFuns[ph$recordType])(con,endian)
-		if (ph$recordType==1){
-			# variables
-			vh=.ReadVarHeader(con,endian)
-			
-			vars=list()
-			if(vh$numSysVars>0) vars$sysVars=readBin(con,n=vh$numSysVars,size=4,what=numeric(),signed=TRUE,endian=endian)
-			if(vh$numUserVars>0) vars=c(vars,.ReadUserVar(con,endian,n=vh$numUserVars))
-			if(vh$numUserStrs>0) vars=c(vars,.ReadUserStr(con,endian,n=vh$numUserStrs),attr(vh,"version"))
-			if(Verbose) print(vh)
-			if(Verbose) print(vars)
-			el=paste(paste(currentNames,collapse="$"),sep="$","vars")
-			eval(parse(text=paste(el,"<-vars")))
-		} else if (ph$recordType==3){
-			# wave record; verbose made for wave reading if we are passed
-			# Verbose = 2
-			x=.ReadWaveRecord(con,endian,Verbose=ifelse(Verbose==2,TRUE,FALSE),...)
-			if(!is.null(x)){
-				if(is.null(attr(x,"WaveHeader")$WaveName)) {
-					# assume this is a wave name
-					el=paste(paste(currentNames,collapse="$"),sep="$",x)
-				} else {
-					el=paste(paste(currentNames,collapse="$"),sep="$",attr(x,"WaveHeader")$WaveName)
-				}
-				# store the record if required
-				if(missing(regex) || any( grep(regex,el) )){
-					eval(parse(text=paste(el,"<-x")))
-				}
-				if (Verbose) cat("el:",el,"\n")
-			}
-		} else if (ph$recordType==9){
-			# Open Data Folder
-			currentNames=c(currentNames,.ReadDataFolderStartRecord(con,endian))
-		} else if (ph$recordType==10){
-			# Close Data Folder
-			currentNames=currentNames[-length(currentNames)]
-		}		
-	}
-	invisible(root)
 }
 
 
