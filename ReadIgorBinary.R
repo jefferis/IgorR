@@ -90,7 +90,7 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 	} else invisible(rval)
 }
 
-ReadIgorPackedExperiment<-function(pxpfile,endian = .Platform$endian,Verbose=FALSE,StructureOnly=FALSE,regex,...){
+ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,regex,...){
 	require(bitops)
 	if (is.character(pxpfile)) {
 		# NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
@@ -107,6 +107,7 @@ ReadIgorPackedExperiment<-function(pxpfile,endian = .Platform$endian,Verbose=FAL
 	firstShort=readBin(pxpfile,"integer",1,size=2)
 	firstShort=bitAnd(firstShort,0x7FFF)
 	if (bitAnd(firstShort,0xFF00) != 0) endian="swap"
+	else endian = .Platform$endian
 	
 	root=list() # we will store data here
 	currentNames="root"
