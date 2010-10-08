@@ -54,6 +54,24 @@
 # 2009-07-09
 # Fixed handling of dates in ReadNclampLogTable
 
+#' This function reads files in the Igor Binary Wave format (IBW) 
+#' @param wavefile Either a character vector containing the path to a file or an R \link{connection} 
+#' @param Verbose Whether to print status information while reading the file
+#' @param ReturnTimeSeries Return as an R time series (package \code{\link{ts}})
+#' @param HeaderOnly Only return the header of the Igor Wave 
+#' @returnType Either a vector containing data or a character vector containing a name   
+#' @return returns a vector containing the wave data OR returns the name of a new R vector containing the data which has been made in the user environment
+#' @author jefferis
+#' @export
+#' @examples
+#' wavedata=ReadIgorBinary("version5.ibw") # return an R \code{list} containing the wave
+#' sum(wavedata)
+#' 
+#' # make an  R \code{list} containing the wave's data in the users's environment
+#' wavename=ReadIgorBinary("version5.ibw",MakeWave=TRUE) 
+#' sum(get(wavename))
+#' 
+#' 
 ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 		MakeWave=FALSE,HeaderOnly=FALSE){
 	if (is.character(wavefile)) {
@@ -90,6 +108,22 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 	} else invisible(rval)
 }
 
+#' Reads an Igor Pro Packed Experiment (.pxp) file
+#' 
+#' Note that pxp files are only partially documented so some contents
+#' cannot be parsed (e.g. image data). Furthermore for the time being this 
+#' function only reads data records (Igor waves and variables) but ignores 
+#' e.g. history, program code etc.
+#'    
+#' @param pxpfile Character vector naming a PXP file or an R \link{connection} 
+#' @param Verbose whether to print information to console during loading (numeric values are also allowed 0=none, 1=basic, 2=all)
+#' @param TODO StructureOnly Only the structure of the pxp file for inspection
+#' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
+#' @param ... Optional parameters passed to \link{ReadIgorBinary}
+#' @returnType \code{list}
+#' @return A list containing all the individual waves or variables in the pxp file
+#' @author jefferis
+#' @export
 ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,regex,...){
 	require(bitops)
 	if (is.character(pxpfile)) {
