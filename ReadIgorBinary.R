@@ -54,16 +54,17 @@
 # 2009-07-09
 # Fixed handling of dates in ReadNclampLogTable
 
-ReadIgorBinary<-function(con,Verbose=FALSE,ReturnTimeSeries=FALSE,MakeWave=FALSE,...){
-	if (is.character(con)) {
+ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
+		MakeWave=FALSE,HeaderOnly=FALSE){
+	if (is.character(wavefile)) {
 		# NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
 		# in the mac or windows-1252 encodings
-		con <- file(con, "rb",encoding="MAC")
-		on.exit(close(con))
+		wavefile <- file(wavefile, "rb",encoding="MAC")
+		on.exit(close(wavefile))
 	}
 	
 	# read one byte
-	bytes=readBin(con,"integer",2,size=1)
+	bytes=readBin(wavefile,"integer",2,size=1)
 	if(bytes[1]==0){
 		endian="big"; version=bytes[2]
 	} else {
@@ -72,11 +73,11 @@ ReadIgorBinary<-function(con,Verbose=FALSE,ReturnTimeSeries=FALSE,MakeWave=FALSE
 	if(Verbose) cat("version = ",version,"endian = ",endian,"\n")
 	
 	if(version==5) {
-		rval=ReadIgorBinary.V5(con,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,...)
+		rval=ReadIgorBinary.V5(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
 	} else if(version==2){
-		rval=ReadIgorBinary.V2(con,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,...)
+		rval=ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
 	}
-	else stop(paste("Unable to read from Igor Binary File:",summary(con)$description,"with version:",version))
+	else stop(paste("Unable to read from Igor Binary File:",summary(wavefile)$description,"with version:",version))
 
 	# makes a wave with a specified name in the user environment
 	if(MakeWave){
