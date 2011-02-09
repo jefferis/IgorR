@@ -649,6 +649,16 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 	else return (WaveData)		
 }
 
+#' Convert an Igor wave (or list of waves) loaded by ReadIgorBinary into an R time series 
+#' 
+#' Where there are multiple waves, they are assumed to be of compatible lengths 
+#' so that they can be joined together by cbind.
+#' 
+#' @param WaveData, a wave or list of waves  
+#' @returnType ts or mts
+#' @return a time series or multi time series
+#' @author jefferis
+#' @export
 WaveToTimeSeries<-function(WaveData){
 	if(is.list(WaveData)) {
 		# process separate waves into multi wave time series
