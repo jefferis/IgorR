@@ -10,7 +10,7 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 	
 	exptDate<-.ParseDate(x$vars$FileDate)
 	exptDateStr=format(exptDate)
-	cat("date is:",exptDateStr)
+	if(Verbose) cat("date is:",exptDateStr)
 	
 	# Do we have a table representation of the data (in waves) ?
 	TableFields=sapply(x,function(x) !is.null(attr(x,"WaveHeader")))
@@ -46,8 +46,8 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 
 .ParseDate<-function(d)
 {
-	exptDate=gsub("[, ]+"," ",d)
-	exptDate=strptime(exptDate,format="%a %b %d %Y") # "Thu Oct 25 2007"
+	d=gsub("[, ]+"," ",d)
+	exptDate=strptime(d,format="%a %b %d %Y") # "Thu Oct 25 2007"
 	if(is.na(exptDate))
 		exptDate=strptime(d, format = "%a %e %b %Y") # "Thu 04 Oct 2007"
 	if(is.na(exptDate)) stop("Unable to parse date format: ",d)
