@@ -1,5 +1,15 @@
 # A log table is a special table produced by Nclamp
 # It consist of a PXP file with variables only
+#' Read the log table produced by Nclamp acquisition software for Igor
+#' log tables are special Igor .pxp files that contain only variables.
+#' Each entry corresponds to a single run of an Nclamp protocol, 
+#' storing information like protocol name, run time etc.  
+#' @param f Path to the log file
+#' @param Verbose Whether to print status information while reading the file
+#' @returnType data.frame
+#' @return A dataframe containing a row for each acquisition protocol run
+#' @author jefferis
+#' @export
 ReadNclampLogTable<-function(f,Verbose=FALSE){
 	x=ReadIgorPackedExperiment(f,Verbose=Verbose)
 	

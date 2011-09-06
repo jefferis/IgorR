@@ -67,7 +67,7 @@
 #' wavedata=ReadIgorBinary("version5.ibw") # return an R \code{list} containing the wave
 #' sum(wavedata)
 #' 
-#' # make an  R \code{list} containing the wave's data in the users's environment
+#' # make an R \code{list} containing the wave's data in the users's environment
 #' wavename=ReadIgorBinary("version5.ibw",MakeWave=TRUE) 
 #' sum(get(wavename))
 #' 
