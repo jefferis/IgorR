@@ -64,10 +64,20 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 	exptDate
 }
 
-ReadSweepFile<-function(f){
-	# function to extract key data from Sweep File 
-	# e.g. for import into Physiology database
-	s=ReadIgorPackedExperiment(f)
+#' Extract summary information from an Nclamp/Igor Sweep File
+#' e.g. for import into Physiology database
+#' @param f path to an Nclamp/Igor pxp format sweep file
+#' @param Verbose print details while parsing underlying pxp file
+#' @returnType list
+#' @return a list of about 25 fields summarising the sweep file 
+#' @author jefferis
+#' @export
+#' @usage 
+#' l=SummariseSweepFile("/path/to/a pxp/file.pxp")
+#' cat("There are",l$NumWaves,"in the file each of total duration",l$StimWaveLength,
+#' "and sample duration",l$StimSampleInterval) 
+SummariseSweepFile<-function(f,Verbose=F){
+	s=ReadIgorPackedExperiment(f,Verbose=Verbose)
 	
 	fileinfo=file.info(f)
 	extraFields=list(FilePath=f,Folder=basename(dirname(f)),
@@ -93,7 +103,7 @@ ReadSweepFile<-function(f){
 }
 
 SweepFilesToDataFrame<-function(ff){
-	ll=lapply(ff, ReadSweepFile)
+	ll=lapply(ff,SummariseSweepFile)
 	lengths=sapply(ll,length)
 	if(any(lengths!=lengths[1]))
 		stop("Heterogeneous results from ReadSweepFile")
