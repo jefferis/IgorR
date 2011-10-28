@@ -416,7 +416,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 	WaveHeader2$type=myread(what="raw",size=1,n=2)
 	myread()
 	# The platform default is utf-8, but some mac or windows-1252 chars are invalid in this
-	# encoding (e.g. µ) so read as mac and convert later to windows=1252
+	# encoding (e.g. mu) so read as mac and convert later to windows=1252
 	defaultEncoding="MAC"
 	WaveHeader2$WaveName=.readNullTermString(con,18+2,encoding=defaultEncoding)
 	myread(n=2) # Skip 8 bytes
