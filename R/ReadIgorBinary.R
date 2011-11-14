@@ -59,7 +59,6 @@
 #' @param Verbose Whether to print status information while reading the file
 #' @param ReturnTimeSeries Return as an R time series (package \code{\link{ts}})
 #' @param HeaderOnly Only return the header of the Igor Wave 
-#' @returnType Either a vector containing data or a character vector containing a name   
 #' @return returns a vector containing the wave data OR returns the name of a new R vector containing the data which has been made in the user environment
 #' @author jefferis
 #' @export
@@ -120,7 +119,6 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @param TODO StructureOnly Only the structure of the pxp file for inspection
 #' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
 #' @param ... Optional parameters passed to \link{ReadIgorBinary}
-#' @returnType \code{list}
 #' @return A list containing all the individual waves or variables in the pxp file
 #' @author jefferis
 #' @export
@@ -291,7 +289,6 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 #' enum PackedFileRecordType
 #' @param con an R connection to the file we are reading
 #' @param endian either little or big
-#' @returnType \code{list}
 #' @return a list containing information about the current record
 #' @author jefferis
 .ReadPackedHeader<-function(con,endian){
@@ -655,8 +652,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 #' so that they can be joined together by cbind.
 #' 
 #' @param WaveData, a wave or list of waves  
-#' @returnType ts or mts
-#' @return a time series or multi time series
+#' @return a time series or multi time series (ts, mts)
 #' @author jefferis
 #' @export
 WaveToTimeSeries<-function(WaveData){

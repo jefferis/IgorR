@@ -6,7 +6,6 @@
 #' storing information like protocol name, run time etc.  
 #' @param f Path to the log file
 #' @param Verbose Whether to print status information while reading the file
-#' @returnType data.frame
 #' @return A dataframe containing a row for each acquisition protocol run
 #' @author jefferis
 #' @export
@@ -68,7 +67,6 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 #' e.g. for import into Physiology database
 #' @param f path to an Nclamp/Igor pxp format sweep file
 #' @param Verbose print details while parsing underlying pxp file
-#' @returnType list
 #' @return a list of about 25 fields summarising the sweep file 
 #' @author jefferis
 #' @export
