@@ -63,11 +63,12 @@
 #' @author jefferis
 #' @export
 #' @examples
-#' wavedata=ReadIgorBinary("version5.ibw") # return an R \code{list} containing the wave
+#' # return a list containing the wave
+#' wavedata=ReadIgorBinary(system.file("igor","version5.ibw",package="IgorR")) 
 #' sum(wavedata)
 #' 
-#' # make an R \code{list} containing the wave's data in the users's environment
-#' wavename=ReadIgorBinary("version5.ibw",MakeWave=TRUE) 
+#' # make a list containing the wave's data in the users's environment
+#' wavename=ReadIgorBinary(system.file("igor","version5.ibw",package="IgorR"),MakeWave=TRUE) 
 #' sum(get(wavename))
 #' 
 #' 
