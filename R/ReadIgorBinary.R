@@ -54,7 +54,7 @@
 # 2009-07-09
 # Fixed handling of dates in ReadNclampLogTable
 
-#' This function reads files in the Igor Binary Wave format (IBW) 
+#' Read binary files in the Igor Binary Wave format (IBW) 
 #' @param wavefile Either a character vector containing the path to a file or an R \link{connection} 
 #' @param Verbose Whether to print status information while reading the file
 #' @param ReturnTimeSeries Return as an R time series (package \code{\link{ts}})
@@ -70,7 +70,6 @@
 #' # make a list containing the wave's data in the users's environment
 #' wavename=ReadIgorBinary(system.file("igor","version5.ibw",package="IgorR"),MakeWave=TRUE) 
 #' sum(get(wavename))
-#' 
 #' 
 ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 		MakeWave=FALSE,HeaderOnly=FALSE){

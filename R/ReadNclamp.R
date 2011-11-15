@@ -75,6 +75,7 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 #' cat("There are",l$NumWaves,"in the file each of total duration",l$StimWaveLength,
 #' "and sample duration",l$StimSampleInterval) 
 SummariseSweepFile<-function(f,Verbose=F){
+	require(tools)
 	s=ReadIgorPackedExperiment(f,Verbose=Verbose)
 	
 	fileinfo=file.info(f)
