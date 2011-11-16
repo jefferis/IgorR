@@ -58,8 +58,10 @@
 #' @param wavefile Either a character vector containing the path to a file or an R \link{connection} 
 #' @param Verbose Whether to print status information while reading the file
 #' @param ReturnTimeSeries Return as an R time series (package \code{\link{ts}})
+#' @param MakeWave Assign wave to a list in the global user environment
 #' @param HeaderOnly Only return the header of the Igor Wave 
-#' @return returns a vector containing the wave data OR returns the name of a new R vector containing the data which has been made in the user environment
+#' @return returns a vector containing the wave data OR returns the name of a 
+#' 	new R vector containing the data which has been made in the user environment
 #' @author jefferis
 #' @export
 #' @examples
@@ -113,10 +115,10 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' cannot be parsed (e.g. image data). Furthermore for the time being this 
 #' function only reads data records (Igor waves and variables) but ignores 
 #' e.g. history, program code etc.
-#'    
+#' 
 #' @param pxpfile Character vector naming a PXP file or an R \link{connection} 
 #' @param Verbose whether to print information to console during loading (numeric values are also allowed 0=none, 1=basic, 2=all)
-#' @param TODO StructureOnly Only the structure of the pxp file for inspection
+#' @param StructureOnly TODO Only the structure of the pxp file for inspection
 #' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
 #' @param ... Optional parameters passed to \link{ReadIgorBinary}
 #' @return A list containing all the individual waves or variables in the pxp file

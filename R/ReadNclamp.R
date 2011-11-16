@@ -1,6 +1,8 @@
-# A log table is a special table produced by Nclamp
-# It consist of a PXP file with variables only
+# Functions to summarise the sweep (data) and log files produced by
+# Neuromatic/Nclamp
+
 #' Read the log table produced by Nclamp acquisition software for Igor
+#' 
 #' log tables are special Igor .pxp files that contain only variables.
 #' Each entry corresponds to a single run of an Nclamp protocol, 
 #' storing information like protocol name, run time etc.  
@@ -42,6 +44,12 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 	d
 }
 
+#' Read all Nclamp log tables from a directory into global list logfiles 
+#' @param logfiledir Path to directory containing log files (pxp files) 
+#' @param ... additional parameters for ReadNclampLogTable
+#' @return character vector with names of parsed log files
+#' @author jefferis
+#' @export
 ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",...){
 	logfilenames=dir(logfiledir,full=T)
 	logfiles<<-list()
@@ -70,10 +78,10 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 #' @return a list of about 25 fields summarising the sweep file 
 #' @author jefferis
 #' @export
-#' @usage 
+#' @examples
 #' l=SummariseSweepFile("/path/to/a pxp/file.pxp")
 #' cat("There are",l$NumWaves,"in the file each of total duration",l$StimWaveLength,
-#' "and sample duration",l$StimSampleInterval) 
+#' 	"and sample duration",l$StimSampleInterval) 
 SummariseSweepFile<-function(f,Verbose=F){
 	require(tools)
 	s=ReadIgorPackedExperiment(f,Verbose=Verbose)
@@ -101,24 +109,42 @@ SummariseSweepFile<-function(f,Verbose=F){
 	return(rval)
 }
 
+#' Summarise multiple sweep files into a single dataframe
+#' 
+#' Note that this is still a little fragile if the lists produced by 
+#' SummariseSweepFile do not have consistent field names
+#' @param ff paths to a set of sweep files 
+#' @return dataframe with rows for each sweep file  
+#' @author jefferis
+#' @seealso SummariseSweepFile
+#' @export
 SweepFilesToDataFrame<-function(ff){
 	ll=lapply(ff,SummariseSweepFile)
 	lengths=sapply(ll,length)
 	if(any(lengths!=lengths[1]))
-		stop("Heterogeneous results from ReadSweepFile")
+		stop("Heterogeneous results from SummariseSweepFile")
 	# df=as.data.frame(ll[1],stringsAsFactors=FALSE)
 	# if(length(ll)==1) return(df)
 	# ll=ll[-1]
 	do.call(rbind,lapply(ll,as.data.frame,stringsAsFactors=FALSE))
 }
 
-UpdateSweepDataFrame<-function(foldername,outfile=NULL,action=c("update","force"),DryRun=FALSE){
+#' Update the csv file summarising the sweeps in an Nclamp data folder
+#' 
+#' @param folder Path to the folder
+#' @param outfile Path to outfile (default: /path/to/datafolder/datafolder.csv) 
+#' @param action TODO update newer (default) or force update (not implemented)
+#' @param DryRun Report which files would be processed, but do nothing
+#' @return TRUE if something happened, FALSE otherwise
+#' @author jefferis
+#' @export
+UpdateSweepDataFrame<-function(folder,outfile=NULL,action=c("update","force"),DryRun=FALSE){
 	action=match.arg(action)
-	foldername=path.expand(foldername) # replace ~ by full path if necessary
+	folder=path.expand(folder) # replace ~ by full path if necessary
 	if(is.null(outfile)){
-		outfile=file.path(foldername,paste(basename(foldername),sep=".","csv"))
+		outfile=file.path(folder,paste(basename(folder),sep=".","csv"))
 	}
-	infiles=dir(foldername,patt="_[0-9]+\\.pxp$",full=T)
+	infiles=dir(folder,patt="_[0-9]+\\.pxp$",full=T)
 	if(!file.exists(outfile)){
 		# we need to process all infiles
 		newinfiles=infiles
@@ -140,7 +166,8 @@ UpdateSweepDataFrame<-function(foldername,outfile=NULL,action=c("update","force"
 				newdf=olddf
 			}
 			write.csv(newdf,outfile)
+			return(invisible(TRUE))
 		}
-		invisible(TRUE)
 	}
+	return(invisible(FALSE))
 }
