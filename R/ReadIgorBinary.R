@@ -102,7 +102,7 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 		WaveName=make.names(OriginalWaveName)
 		if(WaveName!=OriginalWaveName)
 			warning("Had to change wave name from ",OriginalWaveName," to ",WaveName,"to keep R happy")
-		assign(WaveName,rval,inherits=TRUE)
+		assign(WaveName,rval,envir = .GlobalEnv)
 		invisible(WaveName)
 	} else invisible(rval)
 }
