@@ -122,6 +122,8 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
 #' @param ... Optional parameters passed to \link{ReadIgorBinary}
 #' @return A list containing all the individual waves or variables in the pxp file
+#' @examples 
+#' r=ReadIgorPackedExperiment(system.file("igor","testexpt.pxp",package="IgorR"))
 #' @author jefferis
 #' @export
 ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,regex,...){
