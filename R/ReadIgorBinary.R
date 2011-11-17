@@ -251,8 +251,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 
 .readIgorDate<-function(con,endian){
 	# Igor uses date as seconds since midnight 1 Jan 1904
-	# Unfortunately does not seem to record time zone, so have to use
-	# current
+	# Unfortunately does not seem to record time zone, so have to use current
 	# readBin can only read signed shorts or bytes,
 	# so must add 2^32 to read as unsigned long	
 	i=as.numeric(readBin(con,endian=endian,what=integer(),size=4))+2^32
@@ -336,11 +335,11 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 	# 	VarNumRec num;						// Type and value of the variable if it is numeric.
 	# } UserNumVarRec;
 	l=list()
-	if(n<0) {return(null)}
+	if(n<0) {return(NULL)}
 	for(i in 1:n){
 		varname=.readNullTermString(con,32)
 		vtype=readBin(con,size=2,what=integer(),signed=TRUE,endian=endian)
-		if(vtype!=1) warning(paste("inappropriate vartype",vartypem," for varname",varname))
+		if(vtype!=1) warning(paste("inappropriate vartype",vtype," for varname",varname))
 		# struct VarNumRec {
 		# 	short numType;						// Type from IgorMath.h.
 		# 	double realPart;					// The real part of the number.
@@ -352,7 +351,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 		fakewh=.DetermineIgorWaveType(fakewh,endian)
 		x=readBin(con,n=2,size=8,what=numeric(),endian=endian)
 		if(fakewh$what=='complex'){
-			x=comple(real=x[1],imag=x[2])
+			x=complex(real=x[1],imaginary=x[2])
 		} else{
 			x=x[1]
 		}
@@ -360,8 +359,9 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 		el=paste("l",sep="$",varname)
 		eval(parse(text=paste(el,"<-x")))
 	}
-	l	
+	l
 }
+
 .ReadUserStr<-function(con,endian,n=1,version=1){
 	# typedef struct UserStrVarRec1 {
 	# 	char name[31+1];					// Name of the string variable.
@@ -375,7 +375,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 	# 	char data[1];						// Start of string data. This is not a C string - no null terminator.
 	# } UserStrVarRec2;         
 	l=list()
-	if(n<0) {return(null)}
+	if(n<0) {return(NULL)}
 	for(i in 1:n){
 		#cat("seek=",seek(con),"\n")
 		varname=.readNullTermString(con,32)

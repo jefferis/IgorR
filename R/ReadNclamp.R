@@ -52,7 +52,7 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 #' @export
 ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",...){
 	logfilenames=dir(logfiledir,full=T)
-	logfiles<<-list()
+	assign("logfiles",list(),env=.GlobalEnv)
 	for(i in seq(logfilenames)){
 		if(i%%10>0) cat(".") else cat(as.integer(i))
 		cat("logfilenames[i]=",logfilenames[i],"\n")
