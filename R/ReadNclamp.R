@@ -79,9 +79,9 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 #' @author jefferis
 #' @export
 #' @examples
-#' l=SummariseSweepFile("/path/to/a pxp/file.pxp")
-#' cat("There are",l$NumWaves,"in the file each of total duration",l$StimWaveLength,
-#' 	"and sample duration",l$StimSampleInterval) 
+#' l=SummariseSweepFile(system.file("igor","WedJul407c2_001.pxp",package="IgorR"))
+#' cat("There are",l$NumWaves,"waves in the file each of total duration",l$StimWaveLength,
+#' 	"ms and sample duration",l$StimSampleInterval,"ms \n") 
 SummariseSweepFile<-function(f,Verbose=F){
 	require(tools)
 	s=ReadIgorPackedExperiment(f,Verbose=Verbose)
