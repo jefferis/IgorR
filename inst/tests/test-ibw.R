@@ -3,7 +3,7 @@
 # Author: jefferis
 ###############################################################################
 
-context("Verify reading of Igor pxp files")
+context("Verify reading of Igor ibw files")
 
 test_that("Read Igor v5 file", {
       expect_that (w5<<-ReadIgorBinary('../igor/version5.ibw'),
