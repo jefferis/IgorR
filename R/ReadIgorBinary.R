@@ -97,7 +97,9 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 		rval=.ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
 	}
 	else stop(paste("Unable to read from Igor Binary File:",summary(wavefile)$description,"with version:",version))
-
+  # Store Igor wave version number
+  attr(rval,'BinHeader')$version=version
+  
 	# makes a wave with a specified name in the user environment
 	if(MakeWave){
 		OriginalWaveName=attr(rval,"WaveHeader")$WaveName
