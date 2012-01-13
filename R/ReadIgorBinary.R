@@ -679,20 +679,22 @@ WaveToTimeSeries<-function(WaveData){
 #' @seealso \code{tsp}
 #' @export
 tsp.igorwave<-function(wave){
+  bh=attr(wave,"BinHeader")
+	if(is.null(bh)) stop("Can't find BinHeader")
   wh=attr(wave,"WaveHeader")
-	if(is.null(wh)) stop("Can't find WaveHeader")
-	if(as.numeric(wh$type)[1]==2){
+	if(is.null(bh)) stop("Can't find WaveHeader")
+	if(bh$version==2){
 		# WaveHeader2
     start=wh$hsB
     deltat=wh$hsA
     npts=wh$npts
-	} else if(as.numeric(wh$type)[1]==5){
+	} else if(bh$version==5){
 		# WaveHeader5, can be multi-dimensional
     start=wh$sfB[1]
     deltat=wh$sfA[1]
     npts=wh$nDim[1]
 	} else {
-		stop(paste("Unsupported Igor Wave Version Number,",as.numeric(wh$type)[1]))
+		stop(paste("Unsupported Igor Wave Version Number,",bh$version))
 	}
   return(c(start=start,end=deltat*npts,frequency=1/deltat))
 }
