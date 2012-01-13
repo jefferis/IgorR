@@ -665,15 +665,32 @@ WaveToTimeSeries<-function(WaveData){
 		l=lapply(WaveData,WaveToTimeSeries)
 		return(do.call(cbind,l))
 	}
-	wh=attr(WaveData,"WaveHeader")
+  tspw = tsp.igorwave(WaveData)
+  ts(WaveData,start=tspw$start,frequency=tspw$frequency)
+}
+
+#' Return tsp attribute of igor wave (start, end, frequency)
+#' 
+#' @param wave Igor wave loaded by ReadIgorBinary or ReadIgorPackedExperiment
+#' @return numeric vector with elements start, end, frequency
+#' @author jefferis
+#' @seealso \code{tsp}
+#' @export
+tsp.igorwave<-function(wave){
+  wh=attr(wave,"WaveHeader")
 	if(is.null(wh)) stop("Can't find WaveHeader")
 	if(as.numeric(wh$type)[1]==2){
 		# WaveHeader2
-		return(ts(WaveData,start=attr(WaveData,"WaveHeader")$hsB,deltat=attr(WaveData,"WaveHeader")$hsA))
+    start=wh$hsB
+    deltat=wh$hsA
+    npts=wh$npts
 	} else if(as.numeric(wh$type)[1]==5){
-		# WaveHeader5
-		return(ts(WaveData,start=attr(WaveData,"WaveHeader")$sfB[1],deltat=attr(WaveData,"WaveHeader")$sfA[1]))
+		# WaveHeader5, can be multi-dimensional
+    start=wh$sfB[1]
+    deltat=wh$sfA[1]
+    npts=wh$nDim[1]
 	} else {
 		stop(paste("Unsupported Igor Wave Version Number,",as.numeric(wh$type)[1]))
 	}
+  return(c(start=start,end=deltat*npts,frequency=1/deltat))
 }
