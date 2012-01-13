@@ -668,7 +668,7 @@ WaveToTimeSeries<-function(WaveData){
 		return(do.call(cbind,l))
 	}
   tspw = tsp.igorwave(WaveData)
-  ts(WaveData,start=tspw$start,frequency=tspw$frequency)
+  ts(WaveData,start=tspw[1],frequency=tspw[3])
 }
 
 #' Return tsp attribute of igor wave (start, end, frequency)
