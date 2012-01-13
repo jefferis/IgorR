@@ -673,6 +673,7 @@ WaveToTimeSeries<-function(WaveData){
 
 #' Return tsp attribute of igor wave (start, end, frequency)
 #' 
+#' Note that end = (npts-1) * deltat
 #' @param wave Igor wave loaded by ReadIgorBinary or ReadIgorPackedExperiment
 #' @return numeric vector with elements start, end, frequency
 #' @author jefferis
@@ -696,5 +697,5 @@ tsp.igorwave<-function(wave){
 	} else {
 		stop(paste("Unsupported Igor Wave Version Number,",bh$version))
 	}
-  return(c(start=start,end=deltat*npts,frequency=1/deltat))
+  return(c(start=start,end=deltat*(npts-1),frequency=1/deltat))
 }
