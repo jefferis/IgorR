@@ -3,11 +3,12 @@
 # Author: jefferis
 ###############################################################################
 
-context("Verify reading of Igor pxp files")
+context("Test handling of Igor pxp files")
 
-test_that("image_type identifies bmps", {
-      pxp<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp")
-      pxp<<-pxp
+pxp<-NULL
+test_that("Read Igor packed experiment file", {
+      pxp<<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp")
+      
       expected_names<-c("vars", "WavSelect", "ChanSelect", "ChanWaveList", "yLabel", 
           "Group", "Set1", "Set2", "SetX", "CT_TimeStamp", "CT_TimeIntvl", 
           "RecordA0", "RecordB0", "RecordA1", "RecordB1", "RecordA2", "RecordB2", 
@@ -51,19 +52,30 @@ test_that("image_type identifies bmps", {
           "RecordB96", "RecordA97", "RecordB97", "RecordA98", "RecordB98", 
           "RecordA99", "RecordB99", "MulticlampVCForRAccess", "ChanA", 
           "ChanB", "Notes")
-           
+      
       expect_that(names(pxp),
           equals(expected_names),'pxp contents identified')
       first5vars<-structure(list(sysVars = c(-2.2097864151001, -71.0904388427734, 
                   0.0737364292144775, -17.2362651824951, 0.504302203655243, 0, 
                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), FileFormat = 1.91, 
-                  FileDateTime = 3266426893, NumWaves = 100, TotalNumWaves = 200), .Names = c("sysVars", 
+              FileDateTime = 3266426893, NumWaves = 100, TotalNumWaves = 200), .Names = c("sysVars", 
               "FileFormat", "FileDateTime", "NumWaves", "TotalNumWaves"))
       expect_that(pxp$vars[1:5],
           equals(first5vars),'read in some Igor variables')
       
       expect_that(range(pxp[['RecordA0']]),
           equals(c(-207, 159.4375)),'read in some numeric wave data')
+    })
+
+test_that("Igor Wave to R time series", {
+      RecordA0<-pxp[['RecordA0']]
+      wA0=WaveToTimeSeries(RecordA0)
+      expect_that(wA0,is_a('ts'))
       
+      expect_that(tsp.igorwave(RecordA0),
+          is_equivalent_to(c(0, 19.975, 40)),'check correct tsp')
+      
+      expect_that(tsp.igorwave(RecordA0),
+          is_equivalent_to(tsp(wA0)),'check tsp attributes from wave and time series match')
     })
 
