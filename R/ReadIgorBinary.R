@@ -76,9 +76,9 @@
 ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 		MakeWave=FALSE,HeaderOnly=FALSE){
 	if (is.character(wavefile)) {
-		# NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
+		# NB setting the encoding to "macintosh" resolves some problems with utf-8 incompatible chars
 		# in the mac or windows-1252 encodings
-		wavefile <- file(wavefile, "rb",encoding="MAC")
+		wavefile <- file(wavefile, "rb",encoding="macintosh")
 		on.exit(close(wavefile))
 	}
 	
@@ -420,7 +420,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 	myread()
 	# The platform default is utf-8, but some mac or windows-1252 chars are invalid in this
 	# encoding (e.g. mu) so read as mac and convert later to windows=1252
-	defaultEncoding="MAC"
+	defaultEncoding="macintosh"
 	WaveHeader2$WaveName=.readNullTermString(con,18+2,encoding=defaultEncoding)
 	myread(n=2) # Skip 8 bytes
 	WaveHeader2$dataUnits=.readNullTermString(con,3+1,encoding=defaultEncoding)
@@ -443,7 +443,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 	# reencode character fields
 	# if(WaveHeader2$platform==1 || (WaveHeader2$platform==0 && endian=="big")){
 	if(WaveHeader2$platform==1 || (WaveHeader2$platform==0)){
-		encoding="MAC"
+		encoding="macintosh"
 	} else {
 		encoding="WINDOWS-1252"
 	}
@@ -551,7 +551,7 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 
 	WaveHeader5$platform=myread(size=1,signed=FALSE)
 	if(WaveHeader5$platform==1 || (WaveHeader5$platform==0 && endian=="big")){
-		encoding="MAC"
+		encoding="macintosh"
 	} else {
 		encoding="WINDOWS-1252"
 	}
@@ -596,8 +596,8 @@ ReadIgorPackedExperiment<-function(pxpfile,Verbose=FALSE,StructureOnly=FALSE,reg
 		WaveData=readChar(con,nchars)
 		# convert from appropriate text encoding to R default
 		if(WaveHeader5$platform==1 || (WaveHeader5$platform==0 && endian=="big")){
-			if(Verbose) cat("Converting text wave from MAC encoding to R default\n")
-			WaveData=iconv(WaveData,from="MAC",to="")
+			if(Verbose) cat("Converting text wave from macintosh encoding to R default\n")
+			WaveData=iconv(WaveData,from="macintosh",to="")
 		} else {
 			if(Verbose) cat("Converting text wave from WINDOWS-1252 encoding to R default\n")
 			WaveData=iconv(WaveData,from="WINDOWS-1252",to="")
