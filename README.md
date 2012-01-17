@@ -20,15 +20,21 @@ To install the latest development version from github
     library(devtools)
     install_github('IgorR','jefferis','pub')
 
+I have not version controlled the documentation, so this will work but will not
+install the documentation which is a shame. 
+
 Development Install
 -------------------
 To checkout a version that can be used for development (e.g. with StatET for Eclipse)
 
     cd /some/suitable/dir
-    git clone jgit:IgorR
+    git clone https://github.com/jefferis/IgorR.git
+    # git clone jgit:IgorR # or local repository 
+    
     
 In R
 
+    install.packages('devtools') # install hadley's devtools
     library(devtools)
     load_all('/some/suitable/dir/IgorR')
     test()
