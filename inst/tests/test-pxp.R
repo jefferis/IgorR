@@ -79,3 +79,9 @@ test_that("Igor Wave to R time series", {
           is_equivalent_to(tsp(wA0)),'check tsp attributes from wave and time series match')
     })
 
+test_that("Read pxp file loading only waves matching regex", {
+      pxp<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp",regex='Record')
+      record_names = paste("Record",
+          rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
+      expect_that(names(pxp), equals(record_names))
+    })
