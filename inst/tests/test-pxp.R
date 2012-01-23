@@ -85,3 +85,13 @@ test_that("Read pxp file loading only waves matching regex", {
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
       expect_that(names(pxp), equals(record_names))
     })
+
+test_that("Read pxp files containing variables with higher characters", {
+      pxp<-ReadIgorPackedExperiment("../igor/ExperimentWithHigherChars.pxp")
+      expect_that(pxp$vars$myscalar,equals(1))
+      expect_that(pxp$vars$mystring,equals("Hello!"))
+      # should be the same on windows 1252, latin-1 and macintosh 
+      expect_that(pxp$vars$micron,equals("µ"))
+      # different for windows 1252, latin-1 and macintosh 
+      expect_that(pxp$vars$pix6,equals("ππππππ"))
+    })
