@@ -1,0 +1,10 @@
+IgorR 0.4-1
+===========
+* Fix an encoding bug on Windows MAC->macintosh
+  (pointed out by Brian Ripley)
+* Tech IgorR to read string variables with non ASCII characters
+* Documentation changes for github 
+
+IgorR 0.4
+=========
+* First version on CRAN

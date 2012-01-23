@@ -1,4 +1,4 @@
-# TODO: Add comment
+# Test reading of Packed Experiment (pxp) files
 # 
 # Author: jefferis
 ###############################################################################

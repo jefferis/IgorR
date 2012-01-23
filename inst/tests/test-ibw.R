@@ -1,4 +1,4 @@
-# TODO: Tests for reading of Igor Binary Wave (.ibw) files
+# Tests for reading of Igor Binary Wave (.ibw) files
 # 
 # Author: jefferis
 ###############################################################################
