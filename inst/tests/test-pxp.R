@@ -7,7 +7,7 @@ context("Test handling of Igor pxp files")
 
 pxp<-NULL
 test_that("Read Igor packed experiment file", {
-      pxp<<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp")
+      pxp<<-read.pxp("../igor/WedJul407c2_001.pxp")
       
       expected_names<-c("vars", "WavSelect", "ChanSelect", "ChanWaveList", "yLabel", 
           "Group", "Set1", "Set2", "SetX", "CT_TimeStamp", "CT_TimeIntvl", 
@@ -80,7 +80,7 @@ test_that("Igor Wave to R time series", {
     })
 
 test_that("Read pxp file loading only waves matching regex", {
-      pxp<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp",regex='Record')
+      pxp<-read.pxp("../igor/WedJul407c2_001.pxp",regex='Record')
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
 			# restrict to waves only
@@ -89,14 +89,14 @@ test_that("Read pxp file loading only waves matching regex", {
     })
 
 test_that("Read pxp file structure only", {
-      pxp<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp",StructureOnly = TRUE)
+      pxp<-read.pxp("../igor/WedJul407c2_001.pxp",StructureOnly = TRUE)
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
       expect_true( all(sapply(pxp[record_names],is.na)) )
     })
 
 test_that("Read pxp files containing variables with higher characters", {
-      pxp<-ReadIgorPackedExperiment("../igor/ExperimentWithHigherChars.pxp")
+      pxp<-read.pxp("../igor/ExperimentWithHigherChars.pxp")
       expect_that(pxp$vars$myscalar,equals(1))
       expect_that(pxp$vars$mystring,equals("Hello!"))
       # should be the same on windows 1252, latin-1 and macintosh 

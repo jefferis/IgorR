@@ -12,7 +12,7 @@
 #' @author jefferis
 #' @export
 ReadNclampLogTable<-function(f,Verbose=FALSE){
-	x=ReadIgorPackedExperiment(f,Verbose=Verbose)
+	x=read.pxp(f,Verbose=Verbose)
 	
 #	WaveFields	
 	# Select text fields only
@@ -84,7 +84,7 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 #' 	"ms and sample duration",l$StimSampleInterval,"ms \n") 
 SummariseSweepFile<-function(f,Verbose=F){
 	require(tools)
-	s=ReadIgorPackedExperiment(f,Verbose=Verbose)
+	s=read.pxp(f,Verbose=Verbose)
 	
 	fileinfo=file.info(f)
 	extraFields=list(FilePath=f,Folder=basename(dirname(f)),

@@ -132,8 +132,8 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @author jefferis
 #' @export
 #' @examples 
-#' r=ReadIgorPackedExperiment(system.file("igor","testexpt.pxp",package="IgorR"))
-ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
+#' r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
+read.pxp<-function(pxpfile,regex,Verbose=FALSE,
     StructureOnly=FALSE,IgorPlatform=NULL,...){
 	if (is.character(pxpfile)) {
 		# NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
@@ -715,7 +715,7 @@ WaveToTimeSeries<-function(WaveData){
 #' Return tsp attribute of igor wave (start, end, frequency)
 #' 
 #' Note that end = (npts-1) * deltat
-#' @param wave Igor wave loaded by read.ibw or ReadIgorPackedExperiment
+#' @param wave Igor wave loaded by read.ibw or read.pxp
 #' @return numeric vector with elements start, end, frequency
 #' @author jefferis
 #' @seealso \code{tsp}
