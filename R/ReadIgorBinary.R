@@ -66,14 +66,14 @@
 #' @export
 #' @examples
 #' # return a list containing the wave
-#' wavedata=ReadIgorBinary(system.file("igor","version5.ibw",package="IgorR")) 
+#' wavedata=read.ibw(system.file("igor","version5.ibw",package="IgorR")) 
 #' sum(wavedata)
 #' 
 #' # make a list containing the wave's data in the users's environment
-#' wavename=ReadIgorBinary(system.file("igor","version5.ibw",package="IgorR"),MakeWave=TRUE) 
+#' wavename=read.ibw(system.file("igor","version5.ibw",package="IgorR"),MakeWave=TRUE) 
 #' sum(get(wavename))
 #' 
-ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
+read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 		MakeWave=FALSE,HeaderOnly=FALSE){
 	if (is.character(wavefile)) {
 		# NB setting the encoding to "macintosh" resolves some problems with utf-8 incompatible chars
@@ -127,7 +127,7 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @param StructureOnly TODO Only the structure of the pxp file for inspection
 #' @param IgorPlatform OS on which Igor file was saved (windows or macintosh) 
 #' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
-#' @param ... Optional parameters passed to \link{ReadIgorBinary}
+#' @param ... Optional parameters passed to \link{read.ibw}
 #' @return A list containing all the individual waves or variables in the pxp file
 #' @author jefferis
 #' @export
@@ -333,7 +333,7 @@ ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
 	#cat("End of Data Folder")
 }
 .ReadWaveRecord<-function(con,endian,Verbose=FALSE,...){	
-	x=ReadIgorBinary(con,Verbose=Verbose,...)
+	x=read.ibw(con,Verbose=Verbose,...)
 	#cat("Wave Record", attr(x,"WaveHeader")$WaveName,"\n")
 	x
 }
@@ -693,7 +693,7 @@ ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
 	else return (WaveData)		
 }
 
-#' Convert an Igor wave (or list of waves) loaded by ReadIgorBinary into an R time series 
+#' Convert an Igor wave (or list of waves) loaded by read.ibw into an R time series 
 #' 
 #' Where there are multiple waves, they are assumed to be of compatible lengths 
 #' so that they can be joined together by cbind.
@@ -715,7 +715,7 @@ WaveToTimeSeries<-function(WaveData){
 #' Return tsp attribute of igor wave (start, end, frequency)
 #' 
 #' Note that end = (npts-1) * deltat
-#' @param wave Igor wave loaded by ReadIgorBinary or ReadIgorPackedExperiment
+#' @param wave Igor wave loaded by read.ibw or ReadIgorPackedExperiment
 #' @return numeric vector with elements start, end, frequency
 #' @author jefferis
 #' @seealso \code{tsp}
