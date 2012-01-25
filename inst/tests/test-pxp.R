@@ -83,6 +83,8 @@ test_that("Read pxp file loading only waves matching regex", {
       pxp<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp",regex='Record')
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
+			# restrict to waves only
+			pxp=pxp[!sapply(pxp,inherits,'list')]
       expect_that(names(pxp), equals(record_names))
     })
 
