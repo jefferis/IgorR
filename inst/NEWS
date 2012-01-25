@@ -2,7 +2,8 @@ IgorR 0.4-1
 ===========
 * Fix an encoding bug on Windows MAC->macintosh
   (pointed out by Brian Ripley)
-* Tech IgorR to read string variables with non ASCII characters
+* Teach IgorR to read string variables with non ASCII characters
+* Teach IgorR to read only waves matching a regex
 * Documentation changes for github 
 
 IgorR 0.4

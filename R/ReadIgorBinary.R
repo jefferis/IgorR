@@ -187,7 +187,8 @@ ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
 		} else if (ph$recordType==3){
 			# wave record; verbose made for wave reading if we are passed
 			# Verbose = 2
-			x=.ReadWaveRecord(pxpfile,endian,Verbose=ifelse(Verbose==2,TRUE,FALSE),...)
+			x=.ReadWaveRecord(pxpfile,endian,Verbose=ifelse(Verbose==2,TRUE,FALSE),
+					HeaderOnly=StructureOnly,...)
 			if(!is.null(x)){
 				if(is.null(attr(x,"WaveHeader")$WaveName)) {
 					# assume this is a wave name

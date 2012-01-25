@@ -88,6 +88,13 @@ test_that("Read pxp file loading only waves matching regex", {
       expect_that(names(pxp), equals(record_names))
     })
 
+test_that("Read pxp file structure only", {
+      pxp<-ReadIgorPackedExperiment("../igor/WedJul407c2_001.pxp",StructureOnly = TRUE)
+      record_names = paste("Record",
+          rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
+      expect_true( all(sapply(pxp[record_names],is.na)) )
+    })
+
 test_that("Read pxp files containing variables with higher characters", {
       pxp<-ReadIgorPackedExperiment("../igor/ExperimentWithHigherChars.pxp")
       expect_that(pxp$vars$myscalar,equals(1))
