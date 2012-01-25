@@ -129,10 +129,10 @@ ReadIgorBinary<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
 #' @param ... Optional parameters passed to \link{ReadIgorBinary}
 #' @return A list containing all the individual waves or variables in the pxp file
-#' @examples 
-#' r=ReadIgorPackedExperiment(system.file("igor","testexpt.pxp",package="IgorR"))
 #' @author jefferis
 #' @export
+#' @examples 
+#' r=ReadIgorPackedExperiment(system.file("igor","testexpt.pxp",package="IgorR"))
 ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
     StructureOnly=FALSE,IgorPlatform=NULL,...){
 	if (is.character(pxpfile)) {
@@ -143,9 +143,9 @@ ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
 	}
 	filename=summary(pxpfile)$description
 	
-	Verbose=ifelse(Verbose==1,TRUE,Verbose)
-	Verbose=ifelse(Verbose==0,FALSE,Verbose)
-	
+	if(is.logical(Verbose))
+		Verbose=ifelse(Verbose,1,0)
+
 	# Check if this file needs to be byte swapped
 	firstShort=readBin(pxpfile,"integer",1,size=2)
 	firstShort=bitAnd(firstShort,0x7FFF)
@@ -160,11 +160,12 @@ ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
 
 	root=list() # we will store data here
 	currentNames="root"
-	recordStartPos=0; fileSize=file.info(filename)$size
+	recordStartPos=0
+	fileSize=file.info(filename)$size
 	while(recordStartPos<fileSize){
 		seek(pxpfile,recordStartPos)
 		ph=.ReadPackedHeader(pxpfile,endian)
-		if(Verbose) cat("recordStartPos =",recordStartPos,",Record type =",ph$recordType,
+		if(Verbose>1) cat("recordStartPos =",recordStartPos,",Record type =",ph$recordType,
 					"of length =",ph$numDataBytes,"\n")
 		
 		recordStartPos=seek(pxpfile)+ph$numDataBytes
@@ -179,8 +180,8 @@ ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
 			if(vh$numUserStrs>0) vars=c(vars,
             .ReadUserStr(pxpfile,endian,n=vh$numUserStrs,IgorPlatform=IgorPlatform),
             attr(vh,"version"))
-			if(Verbose) print(vh)
-			if(Verbose) print(vars)
+			if(Verbose>1) print(vh)
+			if(Verbose>1) print(vars)
 			el=paste(paste(currentNames,collapse="$"),sep="$","vars")
 			eval(parse(text=paste(el,"<-vars")))
 		} else if (ph$recordType==3){
@@ -198,7 +199,7 @@ ReadIgorPackedExperiment<-function(pxpfile,regex,Verbose=FALSE,
 				if(missing(regex) || any( grep(regex,el) )){
 					eval(parse(text=paste(el,"<-x")))
 				}
-				if (Verbose) cat("el:",el,"\n")
+				if (Verbose>0) cat("el:",el,"\n")
 			}
 		} else if (ph$recordType==9){
 			# Open Data Folder
