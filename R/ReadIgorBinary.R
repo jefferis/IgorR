@@ -118,7 +118,7 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' function only reads data records (Igor waves and variables) but ignores 
 #' e.g. history, program code etc.
 #' 
-#' IgorPlatform will determine in which encoding text is read (WIN-1252 for
+#' IgorPlatform will determine in which encoding text is read (WINDOWS-1252 for
 #' windows and macintosh for macintosh). Unique abbreviations are acceptable.
 #' Defaults to windows on windows, mac otherwise. 
 #' 
@@ -428,7 +428,7 @@ read.pxp<-function(pxpfile,regex,Verbose=FALSE,
 		#print(version)
 		strLen=readBin(con,n=1,size=version*2,what=integer(),endian=endian)
 		#cat("strLen=",strLen,"\n")
-		x=.readCharsWithEnc(con,strLen,enc=ifelse(IgorPlatform=='windows','WIN-1252','macintosh'))
+		x=.readCharsWithEnc(con,strLen,enc=ifelse(IgorPlatform=='windows','WINDOWS-1252','macintosh'))
 		if(varname!=""){
 			el=paste("l",sep="$",varname)
 			eval(parse(text=paste(el,"<-x")))
