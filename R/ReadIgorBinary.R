@@ -698,18 +698,23 @@ read.pxp<-function(pxpfile,regex,Verbose=FALSE,
 #' Where there are multiple waves, they are assumed to be of compatible lengths 
 #' so that they can be joined together by cbind.
 #' 
-#' @param WaveData, a wave or list of waves  
+#' @param WaveData, a wave or list of waves
+#' @param ReturnOriginalDataOnError If we can't make a time series, return
+#' 	return original data (default TRUE)
 #' @return a time series or multi time series (ts, mts)
 #' @author jefferis
 #' @export
-WaveToTimeSeries<-function(WaveData){
+WaveToTimeSeries<-function(WaveData,ReturnOriginalDataOnError=TRUE){
 	if(is.list(WaveData)) {
 		# process separate waves into multi wave time series
 		l=lapply(WaveData,WaveToTimeSeries)
 		return(do.call(cbind,l))
 	}
   tspw = tsp.igorwave(WaveData)
-  ts(WaveData,start=tspw[1],frequency=tspw[3])
+  res=try(ts(WaveData,start=tspw[1],frequency=tspw[3]))
+	if(inherits(res,'try-error'))
+		WaveData
+	else res
 }
 
 #' Return tsp attribute of igor wave (start, end, frequency)
