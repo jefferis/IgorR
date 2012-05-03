@@ -92,14 +92,18 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 	if(Verbose) cat("version = ",version,"endian = ",endian,"\n")
 	
 	if(version==5) {
-		rval=.ReadIgorBinary.V5(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
+		rval=.ReadIgorBinary.V5(wavefile,Verbose=Verbose,endian=endian,HeaderOnly=HeaderOnly)
 	} else if(version==2){
-		rval=.ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,ReturnTimeSeries=ReturnTimeSeries,HeaderOnly)
+		rval=.ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,HeaderOnly=HeaderOnly)
 	}
 	else stop(paste("Unable to read from Igor Binary File:",summary(wavefile)$description,"with version:",version))
   # Store Igor wave version number
   attr(rval,'BinHeader')$version=version
   
+	if(ReturnTimeSeries){
+		rval=WaveToTimeSeries(rval)
+	}
+	
 	# makes a wave with a specified name in the user environment
 	if(MakeWave){
 		OriginalWaveName=attr(rval,"WaveHeader")$WaveName
@@ -516,10 +520,9 @@ read.pxp<-function(pxpfile,regex,Verbose=FALSE,
 	}
 	attr(WaveData,"WaveHeader")=WaveHeader2
 	attr(WaveData,"BinHeader")=BinHeader2
-	if(ReturnTimeSeries){
-		return(ts(WaveData,start=attr(WaveData,"WaveHeader")$hsB,deltat=attr(WaveData,"WaveHeader")$hsA))
-	}
-	else return (WaveData)
+	attr(WaveData,"start")=attr(WaveData,"WaveHeader")$hsB
+	attr(WaveData,"deltat")=attr(WaveData,"WaveHeader")$hsA
+	WaveData
 }
 
 .ReadIgorBinary.V5<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
@@ -687,10 +690,7 @@ read.pxp<-function(pxpfile,regex,Verbose=FALSE,
 	if(nDims>1) dim(WaveData)=dims
 	attr(WaveData,"WaveHeader")=WaveHeader5
 	attr(WaveData,"BinHeader")=BinHeader5
-	if(ReturnTimeSeries  ){
-		return(ts(WaveData,start=attr(WaveData,"WaveHeader")$sfB[1],deltat=attr(WaveData,"WaveHeader")$sfA[1]))
-	}
-	else return (WaveData)		
+	return (WaveData)
 }
 
 #' Convert an Igor wave (or list of waves) loaded by read.ibw into an R time series 
