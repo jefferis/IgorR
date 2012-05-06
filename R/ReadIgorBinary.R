@@ -711,10 +711,11 @@ WaveToTimeSeries<-function(WaveData,ReturnOriginalDataOnError=TRUE){
 		return(do.call(cbind,l))
 	}
   tspw = tsp.igorwave(WaveData)
-  res=try(ts(WaveData,start=tspw[1],frequency=tspw[3]))
-	if(inherits(res,'try-error'))
+  res=try(ts(WaveData,start=tspw[1],frequency=tspw[3]),silent=TRUE)
+	if(inherits(res,'try-error')){
+		warning(res)
 		WaveData
-	else res
+	}	else res
 }
 
 #' Return tsp attribute of igor wave (start, end, frequency)
