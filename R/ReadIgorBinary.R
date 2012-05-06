@@ -117,6 +117,8 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 
 #' Reads an Igor Pro Packed Experiment (.pxp) file
 #' 
+#'
+#' 
 #' Note that pxp files are only partially documented so some contents
 #' cannot be parsed (e.g. image data). Furthermore for the time being this 
 #' function only reads data records (Igor waves and variables) but ignores 
@@ -127,17 +129,19 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' Defaults to windows on windows, mac otherwise. 
 #' 
 #' @param pxpfile Character vector naming a PXP file or an R \link{connection} 
+#' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
+#' @param ReturnTimeSeries Igor waves are returned as a ts object with  sensible
+#'   x scaling (FALSE by default)
 #' @param Verbose whether to print information to console during loading (numeric values are also allowed 0=none, 1=basic, 2=all)
 #' @param StructureOnly TODO Only the structure of the pxp file for inspection
-#' @param IgorPlatform OS on which Igor file was saved (windows or macintosh) 
-#' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
+#' @param IgorPlatform OS on which Igor file was saved (windows or macintosh)
 #' @param ... Optional parameters passed to \link{read.ibw}
 #' @return A list containing all the individual waves or variables in the pxp file
 #' @author jefferis
 #' @export
 #' @examples 
 #' r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
-read.pxp<-function(pxpfile,regex,Verbose=FALSE,
+read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
     StructureOnly=FALSE,IgorPlatform=NULL,...){
 	if (is.character(pxpfile)) {
 		# NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
@@ -192,7 +196,7 @@ read.pxp<-function(pxpfile,regex,Verbose=FALSE,
 			# wave record; verbose made for wave reading if we are passed
 			# Verbose = 2
 			x=.ReadWaveRecord(pxpfile,endian,Verbose=ifelse(Verbose==2,TRUE,FALSE),
-					HeaderOnly=StructureOnly,...)
+					HeaderOnly=StructureOnly,ReturnTimeSeries=ReturnTimeSeries,...)
 			if(!is.null(x)){
 				if(is.null(attr(x,"WaveHeader")$WaveName)) {
 					# assume this is a wave name
