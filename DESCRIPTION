@@ -1,8 +1,8 @@
 Package: IgorR
 Type: Package
 Title: Read binary files saved by Igor Pro (including Neuromatic data)
-Version: 0.5
-Date: 2012-01-25
+Version: 0.5-1
+Date: 2012-05-06
 Author: Greg Jefferis
 Maintainer: Greg Jefferis <jefferis@gmail.com>
 Description: This package provides function to read data from the Igor

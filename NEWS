@@ -1,3 +1,9 @@
+IgorR 0.5-1
+===========
+* Option to return Igor wave data as time series when reading pxp files.
+* Fix problem with empty waves often encountered when reading waves in PXP files
+  as time series. 
+
 IgorR 0.5
 ===========
 * rename ReadIgorPackedExperiment and ReadIgorBinary functions to
