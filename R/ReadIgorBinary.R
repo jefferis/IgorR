@@ -116,9 +116,7 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 }
 
 #' Reads an Igor Pro Packed Experiment (.pxp) file
-#' 
-#'
-#' 
+#'  
 #' Note that pxp files are only partially documented so some contents
 #' cannot be parsed (e.g. image data). Furthermore for the time being this 
 #' function only reads data records (Igor waves and variables) but ignores 
@@ -126,8 +124,7 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' 
 #' IgorPlatform will determine in which encoding text is read (WINDOWS-1252 for
 #' windows and macintosh for macintosh). Unique abbreviations are acceptable.
-#' Defaults to windows on windows, mac otherwise. 
-#' 
+#' Defaults to windows on windows, mac otherwise.
 #' @param pxpfile Character vector naming a PXP file or an R \link{connection} 
 #' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
 #' @param ReturnTimeSeries Igor waves are returned as a ts object with  sensible
