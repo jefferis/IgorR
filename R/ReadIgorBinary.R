@@ -161,7 +161,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
   if(is.null(IgorPlatform))
 	  IgorPlatform=ifelse(.Platform$OS.type=="windows",'windows','macintosh')
   else
-    IgorPlatform=match.arg(IgorPlatform,choice=c('windows','macintosh'))
+    IgorPlatform=match.arg(IgorPlatform,choices=c('windows','macintosh'))
 
 	root=list() # we will store data here
 	currentNames="root"
@@ -433,7 +433,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
 		#print(version)
 		strLen=readBin(con,n=1,size=version*2,what=integer(),endian=endian)
 		#cat("strLen=",strLen,"\n")
-		x=.readCharsWithEnc(con,strLen,enc=ifelse(IgorPlatform=='windows','WINDOWS-1252','macintosh'))
+		x=.readCharsWithEnc(con,strLen,encoding=ifelse(IgorPlatform=='windows','WINDOWS-1252','macintosh'))
 		if(varname!=""){
 			el=paste("l",sep="$",varname)
 			eval(parse(text=paste(el,"<-x")))

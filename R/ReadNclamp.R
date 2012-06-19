@@ -51,13 +51,14 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 #' @author jefferis
 #' @export
 ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",...){
-	logfilenames=dir(logfiledir,full=T)
-	assign("logfiles",list(),env=.GlobalEnv)
+	logfilenames=dir(logfiledir,full.names=T)
+	logfiles=list()
 	for(i in seq(logfilenames)){
 		if(i%%10>0) cat(".") else cat(as.integer(i))
 		cat("logfilenames[i]=",logfilenames[i],"\n")
 		logfiles[[i]]<<-try(ReadNclampLogTable(logfilenames[i]),...)
 	}
+	assign("logfiles",logfiles,envir=.GlobalEnv)
 	logfilenames
 }
 
@@ -95,7 +96,7 @@ SummariseSweepFile<-function(f,Verbose=F){
 	
 	summaryFields=s$vars[chosenFields]
 	listnames=names(s)[sapply(s,class)=="list"]
-	possStimuli=setdiff(listnames, c("vars","Notes",grep("^Chan[A-Z]$",listnames,val=T)))
+	possStimuli=setdiff(listnames, c("vars","Notes",grep("^Chan[A-Z]$",listnames,value=T)))
 	if(length(possStimuli)!=1) stop("unable to identify stimulus protocol")
 	ProtocolName=possStimuli[1]
 	chosenProtocolFields=c("WaveLength","SampleInterval","SamplesPerWave",
@@ -144,7 +145,7 @@ UpdateSweepDataFrame<-function(folder,outfile=NULL,action=c("update","force"),Dr
 	if(is.null(outfile)){
 		outfile=file.path(folder,paste(basename(folder),sep=".","csv"))
 	}
-	infiles=dir(folder,patt="_[0-9]+\\.pxp$",full=T)
+	infiles=dir(folder,pattern="_[0-9]+\\.pxp$",full.names=T)
 	if(!file.exists(outfile)){
 		# we need to process all infiles
 		newinfiles=infiles

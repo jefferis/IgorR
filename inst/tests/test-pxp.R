@@ -5,9 +5,9 @@
 
 context("Test handling of Igor pxp files")
 
-pxp<-NULL
+pxp<-read.pxp("../igor/WedJul407c2_001.pxp")
+
 test_that("Read Igor packed experiment file", {
-      pxp<<-read.pxp("../igor/WedJul407c2_001.pxp")
       
       expected_names<-c("vars", "WavSelect", "ChanSelect", "ChanWaveList", "yLabel", 
           "Group", "Set1", "Set2", "SetX", "CT_TimeStamp", "CT_TimeIntvl", 
