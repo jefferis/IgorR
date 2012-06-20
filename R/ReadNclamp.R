@@ -44,22 +44,27 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 	d
 }
 
-#' Read all Nclamp log tables from a directory into global list logfiles 
+#' Read all Nclamp log tables from a directory into a list 
 #' @param logfiledir Path to directory containing log files (pxp files) 
 #' @param ... additional parameters for ReadNclampLogTable
-#' @return character vector with names of parsed log files
+#' @return named list containing one dataframe for each parsed log file
 #' @author jefferis
 #' @export
-ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",...){
+#' @examples
+#' \dontrun{
+#' ReadAllNclampLogTables("/GD/projects/PhysiologyData/logs")
+#' str(logfiles)
+#' }
+ReadAllNclampLogTables<-function(logfiledir,...){
 	logfilenames=dir(logfiledir,full.names=T)
 	logfiles=list()
 	for(i in seq(logfilenames)){
 		if(i%%10>0) cat(".") else cat(as.integer(i))
 		cat("logfilenames[i]=",logfilenames[i],"\n")
-		logfiles[[i]]<<-try(ReadNclampLogTable(logfilenames[i]),...)
+		logfiles[[i]]<-try(ReadNclampLogTable(logfilenames[i]),...)
 	}
-	assign("logfiles",logfiles,envir=.GlobalEnv)
-	logfilenames
+	names(logfiles)=logfilenames
+  logfiles
 }
 
 .ParseDate<-function(d)
@@ -73,6 +78,7 @@ ReadAllNclampLogTables<-function(logfiledir="/GD/projects/PhysiologyData/logs",.
 }
 
 #' Extract summary information from an Nclamp/Igor Sweep File
+#' 
 #' e.g. for import into Physiology database
 #' @param f path to an Nclamp/Igor pxp format sweep file
 #' @param Verbose print details while parsing underlying pxp file
