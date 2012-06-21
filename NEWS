@@ -1,6 +1,7 @@
 IgorR 0.5-2
 ===========
 * Minor fixes to remove outstanding NOTES from R 2.15's check
+
 IgorR 0.5-1
 ===========
 * Option to return Igor wave data as time series when reading pxp files.
