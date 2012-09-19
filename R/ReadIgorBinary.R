@@ -731,7 +731,7 @@ tsp.igorwave<-function(wave){
   bh=attr(wave,"BinHeader")
   if(is.null(bh)) stop("Can't find BinHeader")
   wh=attr(wave,"WaveHeader")
-  if(is.null(bh)) stop("Can't find WaveHeader")
+  if(is.null(wh)) stop("Can't find WaveHeader")
   if(bh$version==2){
     # WaveHeader2
     start=wh$hsB
