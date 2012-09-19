@@ -1,3 +1,7 @@
+IgorR 0.5-3
+===========
+* Minor fix to error checks in tsp.igorwave
+
 IgorR 0.5-2
 ===========
 * Minor fixes to remove outstanding NOTES from R 2.15's check
