@@ -314,13 +314,18 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
 #   */
 # };
 
-#' Read the a short record header from the current location in a PXP file
+#' Private functions in IgorR Package
+#' @name IgorR-private
+NULL
+
+#' @title Read the a short record header from the current location in a PXP file
 #' 
 #' Note that the recordType will be one of the constants from Igor's
 #' enum PackedFileRecordType
 #' @param con an R connection to the file we are reading
 #' @param endian either little or big
 #' @return a list containing information about the current record
+#' @rdname IgorR-private
 #' @author jefferis
 .ReadPackedHeader<-function(con,endian){
   recordType=readBin(con,size=2,what=integer(),signed=FALSE,endian=endian)
