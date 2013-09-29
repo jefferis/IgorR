@@ -56,7 +56,7 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
 #' ReadAllNclampLogTables("/GD/projects/PhysiologyData/logs")
 #' str(logfiles)
 #' }
-ReadAllNclampLogTables<-function(logfiledir,pattern="_log[0-9]+\\.pxp$",...){
+ReadAllNclampLogTables<-function(logfiledir,pattern="_log[0-9]+[.]pxp$",...){
   logfilenames=dir(logfiledir,pattern=pattern,full.names=T)
   logfiles=list()
   for(i in seq(logfilenames)){
