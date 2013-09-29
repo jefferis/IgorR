@@ -412,8 +412,7 @@ NULL
       x=x[1]
     }
     readBin(con,n=1,size=4,what=integer(),endian=endian)
-    el=paste("l",sep="$",varname)
-    eval(parse(text=paste(el,"<-x")))
+    l[[varname]]=x
   }
   l
 }
@@ -442,8 +441,7 @@ NULL
     #cat("strLen=",strLen,"\n")
     x=.readCharsWithEnc(con,strLen,encoding=ifelse(IgorPlatform=='windows','WINDOWS-1252','macintosh'))
     if(varname!=""){
-      el=paste("l",sep="$",varname)
-      eval(parse(text=paste(el,"<-x")))
+      l[[varname]]=x
     }
   }
   l
