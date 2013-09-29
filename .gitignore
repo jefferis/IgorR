@@ -2,3 +2,4 @@ NAMESPACE
 man/
 .settings/
 private/
+.Rproj.user
