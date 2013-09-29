@@ -287,7 +287,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
   i
 }
 
-igor_date_origin<-as.numeric(ISOdate(1904,1,1,hour=0))
+igor_date_origin<-as.numeric(ISOdate(1904,1,1,hour=0,tz=""))
 
 .convertIgorDate<-function(dateval){
   dateval=dateval+igor_date_origin
