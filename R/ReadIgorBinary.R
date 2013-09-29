@@ -188,7 +188,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
       if(Verbose>1) print(vh)
       if(Verbose>1) print(vars)
       el=paste(paste(currentNames,collapse="$"),sep="$","vars")
-      eval(parse(text=paste(el,"<-vars")))
+      eval(parse(text=paste(el,"<-vars"),keep.source=FALSE))
     } else if (ph$recordType==3){
       # wave record; verbose made for wave reading if we are passed
       # Verbose = 2
@@ -203,7 +203,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
         }
         # store the record if required
         if(missing(regex) || any( grep(regex,el) )){
-          eval(parse(text=paste(el,"<-x")))
+          eval(parse(text=paste(el,"<-x"),keep.source=FALSE))
         }
         if (Verbose>0) cat("el:",el,"\n")
       }
