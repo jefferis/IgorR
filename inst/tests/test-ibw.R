@@ -23,3 +23,12 @@ test_that("Read Igor v2 file", {
       expect_that(tsp.igorwave(w2),
           equals(structure(c(0, 4, 1), .Names = c("start", "end", "frequency"))))
     })
+
+test_that("Processing of dates", {
+  expect_equivalent(.convertIgorDate(3444214517),as.POSIXct("2013-02-20 14:15:17"))
+  # from nm20120811c1_016.pxp 
+  # current implementation says 13:37 on my laptop, lmb cluster and mac in PDT
+  # but mtime of file and embedded time string is 12:37 
+  # and this is also what I get on a sunos machine in PDT
+  expect_equivalent(.convertIgorDate(3427533421),as.POSIXct("2012-08-11 13:37:01"))
+})
