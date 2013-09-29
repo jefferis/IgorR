@@ -136,6 +136,7 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @return A list containing all the individual waves or variables in the pxp file
 #' @author jefferis
 #' @export
+#' @import bitops
 #' @examples 
 #' r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
 read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,

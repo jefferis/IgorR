@@ -12,7 +12,7 @@ Description: This package provides function to read data from the Igor
     includes some functions to load special pxp files produced by the
     Neuromatic/Nclamp packages for recording and analysing neuronal
     data. See http://www.neuromatic.thinkrandom.com/ for details.
-Depends:
+Imports:
     bitops,
     tools
 Suggests:

@@ -86,12 +86,12 @@ ReadAllNclampLogTables<-function(logfiledir,pattern="_log[0-9]+\\.pxp$",...){
 #' @return a list of about 25 fields summarising the sweep file 
 #' @author jefferis
 #' @export
+#' @import tools
 #' @examples
 #' l=SummariseSweepFile(system.file("igor","WedJul407c2_001.pxp",package="IgorR"))
 #' cat("There are",l$NumWaves,"waves in the file each of total duration",l$StimWaveLength,
 #'  "ms and sample duration",l$StimSampleInterval,"ms \n") 
 SummariseSweepFile<-function(f,Verbose=F){
-  require(tools)
   s=read.pxp(f,Verbose=Verbose)
   
   fileinfo=file.info(f)
