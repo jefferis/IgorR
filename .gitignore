@@ -3,3 +3,4 @@ man/
 .settings/
 private/
 .Rproj.user
+.Rhistory
