@@ -31,8 +31,7 @@ To checkout a version that can be used for development (e.g. with StatET for Ecl
     cd /some/suitable/dir
     git clone https://github.com/jefferis/IgorR.git
     # git clone jgit:IgorR # or local repository 
-    
-    
+
 In R
 
     install.packages('devtools') # install hadley's devtools
