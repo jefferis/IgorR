@@ -305,7 +305,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
 }
 
 .readCharsWithEnc<-function(con,nchars,encoding,targetenc='utf8'){
-  s=readChar(con,nchars)
+  s=readChar(con,nchars,useBytes=TRUE)
   if(missing(encoding)) return(s)
   else return(iconv(s,from=encoding,to=targetenc))
 }
