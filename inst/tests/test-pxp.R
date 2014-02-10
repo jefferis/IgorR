@@ -115,3 +115,38 @@ test_that("Read pxp files containing variables with higher characters", {
       # different for windows 1252, latin-1 and macintosh 
       expect_that(pxp$vars$pix6,equals("ππππππ"))
     })
+
+test_that("Read pxp history", {
+      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      expect_false(is.null(pxp$history))
+      expect_true(nchar(pxp$history) > 0)
+    })
+
+test_that("Read pxp recreation macro", {
+      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      expect_false(is.null(pxp$recmacro))
+      expect_true(nchar(pxp$recmacro) > 0)
+    })
+
+test_that("Read pxp main procedure", {
+      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      expect_false(is.null(pxp$mainproc))
+      expect_equal(pxp$mainproc, "#pragma rtGlobals=3\t\t// Use modern global access method and strict wave access.\r\n")
+    })
+
+test_that("Read pxp embedded procedure", {
+      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      expect_false(is.null(pxp$Proc0))
+      expect_equal(pxp$Proc0, "#pragma rtGlobals=3\t\t// Use modern global access method and strict wave access.\r\n")
+    })
+
+test_that("Read pxp plain notebook", {
+      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      expect_false(is.null(pxp$Notebook0))
+      expect_equal(pxp$Notebook0, "plain notebook!")
+    })
+
+test_that("Read pxp ignores formatted notebook", {
+      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      expect_true(is.null(pxp$Notebook1))
+    })

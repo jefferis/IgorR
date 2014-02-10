@@ -131,6 +131,7 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #'   x scaling (FALSE by default)
 #' @param Verbose whether to print information to console during loading (numeric values are also allowed 0=none, 1=basic, 2=all)
 #' @param StructureOnly TODO Only the structure of the pxp file for inspection
+#' @param ExtractText wether to extract procedures, recreation macros, history and plain text notebooks (FALSE by default)
 #' @param IgorPlatform OS on which Igor file was saved (windows or macintosh)
 #' @param ... Optional parameters passed to \link{read.ibw}
 #' @return A list containing all the individual waves or variables in the pxp file
@@ -140,7 +141,7 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @examples 
 #' r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
 read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
-    StructureOnly=FALSE,IgorPlatform=NULL,...){
+    StructureOnly=FALSE,ExtractText=FALSE,IgorPlatform=NULL,...){
   if (is.character(pxpfile)) {
     # NB setting the encoding to "MAC" resolves some problems with utf-8 incompatible chars
     # in the mac or windows-1252 encodings
@@ -163,6 +164,8 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
     IgorPlatform=ifelse(.Platform$OS.type=="windows",'windows','macintosh')
   else
     IgorPlatform=match.arg(IgorPlatform,choices=c('windows','macintosh'))
+
+  encoding = ifelse(IgorPlatform=='windows','WINDOWS-1252','macintosh')
 
   root=list() # we will store data here
   currentNames="root"
@@ -208,6 +211,36 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
         }
         if (Verbose>0) cat("el:",el,"\n")
       }
+    } else if (ph$recordType == 2 && ExtractText){
+        # Experiment History
+        history = .readCharsWithEnc(pxpfile, ph$numDataBytes, encoding)
+        el = paste(paste(currentNames, collapse="$"), sep="$", "history")
+        eval(parse(text=paste(el,"<-history"), keep.source=FALSE))
+        if(Verbose > 1)
+          cat("history: ", substr(history,0,20), " ...\n")
+    } else if (ph$recordType == 4 && ExtractText){
+        # Recreation Macro
+        recmacro = .readCharsWithEnc(pxpfile, ph$numDataBytes, encoding)
+        el = paste(paste(currentNames, collapse="$"), sep="$", "recmacro")
+        eval(parse(text=paste(el,"<-recmacro"), keep.source=FALSE))
+        if(Verbose > 1)
+          cat("recreation macro: ", substr(recmacro,0,20), " ...\n")
+    } else if (ph$recordType == 5 && ExtractText){
+        # Procedure Text
+        mainproc = .readCharsWithEnc(pxpfile, ph$numDataBytes, encoding)
+        el = paste(paste(currentNames, collapse="$"), sep="$", "mainproc")
+        eval(parse(text=paste(el,"<-mainproc"), keep.source=FALSE))
+        if(Verbose > 1)
+          cat("main procedure: ", substr(mainproc,0,20), " ...\n")
+    } else if (ph$recordType == 8 && ExtractText){
+        # packed procedures and notebooks
+        file = .ReadPackedFile(pxpfile, ph$numDataBytes, encoding,  Verbose)
+        if(length(file) > 0){
+          el = paste(paste(currentNames, collapse="$"), sep="$", file$name)
+          eval(parse(text=paste(el,"<-file$data"), keep.source=FALSE))
+          if(Verbose > 1)
+            cat("packed file ", file$name, ": ", substr(file$data,1,20), " ...\n")
+        }
     } else if (ph$recordType==9){
       # Open Data Folder
       currentNames=c(currentNames,.ReadDataFolderStartRecord(pxpfile,endian))
@@ -349,6 +382,36 @@ NULL
   x=read.ibw(con,Verbose=Verbose,...)
   #cat("Wave Record", attr(x,"WaveHeader")$WaveName,"\n")
   x
+}
+
+.ReadPackedFile<-function(con, recordSize, encoding, Verbose){
+
+  # discard first header part
+  numBytes   = 32
+  readChar(con, numBytes)
+  recordSize = recordSize - numBytes
+
+  # read the filename
+  file       = list()
+  file$name  = readChar(con, numBytes)
+  recordSize = recordSize - numBytes
+
+  # discard last header part
+  numBytes   = 90
+  readChar(con, numBytes)
+  recordSize = recordSize - numBytes
+
+  file$data  = .readCharsWithEnc(con, recordSize, encoding)
+
+  if(nchar(file$data) <= 1) { # assume it is a formatted notebook with custom binary header
+
+    if(Verbose > 1)
+      cat("Ignoring formatted notebook ", file$name, "\n")
+
+    return(list())
+  }
+
+  return(file)
 }
 
 #struct PlatformInfo {      // Data written for a record of type kPlatformRecord.
