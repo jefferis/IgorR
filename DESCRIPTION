@@ -19,7 +19,3 @@ Suggests:
     testthat
 License: GPL (>= 2)
 LazyLoad: yes
-Collate:
-    'ReadIgorBinary.R'
-    'ReadNclamp.R'
-    'IgorR-package.R'
