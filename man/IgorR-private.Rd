@@ -1,0 +1,28 @@
+\name{IgorR-private}
+\alias{.ReadPackedHeader}
+\alias{IgorR-private}
+\title{Private functions in IgorR Package}
+\usage{
+.ReadPackedHeader(con, endian)
+}
+\arguments{
+  \item{con}{an R connection to the file we are reading}
+
+  \item{endian}{either little or big}
+}
+\value{
+a list containing information about the current record
+}
+\description{
+Private functions in IgorR Package
+
+Read the a short record header from the current location in
+a PXP file
+
+Note that the recordType will be one of the constants from
+Igor's enum PackedFileRecordType
+}
+\author{
+jefferis
+}
+

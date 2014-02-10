@@ -24,9 +24,6 @@ To install the latest development version from github
     library(devtools)
     install_github('IgorR','jefferis','pub')
 
-I have not version controlled the documentation, so this will work but will not
-install the documentation which is a shame. 
-
 Development Install
 -------------------
 To checkout a version that can be used for development (e.g. with StatET for Eclipse)
