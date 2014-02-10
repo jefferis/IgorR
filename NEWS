@@ -1,3 +1,11 @@
+IgorR 0.7
+=========
+* Add support for extracting history, procedures and plain text notebooks
+  (contributed by Thomas Braun). See ?read.pxp ExtractText argument.
+* dev: added support for travis continuous integration
+* dev: repo now includes man files to allow devtools installation
+* dev: disable unreliable test of date-time parsing
+
 IgorR 0.6
 ===========
 * Some significant speed optimisations without any change in functionality
