@@ -116,25 +116,33 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 }
 
 #' Reads an Igor Pro Packed Experiment (.pxp) file
-#'  
-#' Note that pxp files are only partially documented so some contents
-#' cannot be parsed (e.g. image data). Furthermore for the time being this 
-#' function only reads data records (Igor waves and variables) but ignores 
-#' e.g. history, program code etc.
 #' 
-#' IgorPlatform will determine in which encoding text is read (WINDOWS-1252 for
-#' windows and macintosh for macintosh). Unique abbreviations are acceptable.
-#' Defaults to windows on windows, mac otherwise.
-#' @param pxpfile Character vector naming a PXP file or an R \link{connection} 
-#' @param regex only read records (e.g. waves) in the pxp file whose names match a \link{regex}
+#' Note that pxp files are only partially documented so some contents cannot be 
+#' parsed (e.g. image data). This function currently reads data records (Igor 
+#' waves and variables), history, procedures, recreation macros and plain text
+#' notebooks. Formatted notebooks cannot be read.
+#' 
+#' \code{IgorPlatform} will determine in which encoding text is read 
+#' (WINDOWS-1252 for windows and macintosh for macintosh). Unique abbreviations 
+#' are acceptable. Defaults to "windows" on windows, "macintosh" otherwise. Note
+#' that Igor Pro 5.5 added a PlatformRecord to the pxp file format which is used
+#' to determine the file's platform of origin when available. Since this is 
+#' informatino straight from the horse's mouth it will override the 
+#' \code{IgorPlatform} argument.
+#' @param pxpfile Character vector naming a PXP file or an R \link{connection}
+#' @param regex only read records (e.g. waves) in the pxp file whose names match
+#'   a \link{regex}
 #' @param ReturnTimeSeries Igor waves are returned as a ts object with  sensible
 #'   x scaling (FALSE by default)
-#' @param Verbose whether to print information to console during loading (numeric values are also allowed 0=none, 1=basic, 2=all)
+#' @param Verbose whether to print information to console during loading 
+#'   (numeric values are also allowed 0=none, 1=basic, 2=all)
 #' @param StructureOnly TODO Only the structure of the pxp file for inspection
-#' @param ExtractText wether to extract procedures, recreation macros, history and plain text notebooks (FALSE by default)
+#' @param ExtractText Whether to extract procedures, recreation macros, history 
+#'   and plain text notebooks (FALSE by default)
 #' @param IgorPlatform OS on which Igor file was saved (windows or macintosh)
 #' @param ... Optional parameters passed to \link{read.ibw}
-#' @return A list containing all the individual waves or variables in the pxp file
+#' @return A list containing all the individual waves or variables in the pxp 
+#'   file
 #' @author jefferis
 #' @export
 #' @import bitops
