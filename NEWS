@@ -1,3 +1,9 @@
+IgorR 0.7.1
+===========
+* Fix encoding issue of Igor pxp files containing high bytes.
+  Pointed out by Brian Ripley on Solaris, fixed across all platforms with help
+  from Ashley Manton.
+
 IgorR 0.7
 =========
 * Add support for extracting history, procedures and plain text notebooks
