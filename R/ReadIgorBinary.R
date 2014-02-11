@@ -200,7 +200,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
       if(Verbose>1) print(vh)
       if(Verbose>1) print(vars)
       el=paste(paste(currentNames,collapse="$"),sep="$","vars")
-      eval(parse(text=paste(el,"<-vars"),keep.source=FALSE))
+      eval(.myparse(text=paste(el,"<-vars")))
     } else if (ph$recordType==3){
       # wave record; verbose made for wave reading if we are passed
       # Verbose = 2
@@ -215,7 +215,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
         }
         # store the record if required
         if(missing(regex) || any( grep(regex,el) )){
-          eval(parse(text=paste(el,"<-x"),keep.source=FALSE))
+          eval(.myparse(text=paste(el,"<-x")))
         }
         if (Verbose>0) cat("el:",el,"\n")
       }
@@ -223,21 +223,21 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
         # Experiment History
         history = .readCharsWithEnc(pxpfile, ph$numDataBytes, encoding)
         el = paste(paste(currentNames, collapse="$"), sep="$", "history")
-        eval(parse(text=paste(el,"<-history"), keep.source=FALSE))
+        eval(.myparse(text=paste(el,"<-history")))
         if(Verbose > 1)
           cat("history: ", substr(history,0,20), " ...\n")
     } else if (ph$recordType == 4 && ExtractText){
         # Recreation Macro
         recmacro = .readCharsWithEnc(pxpfile, ph$numDataBytes, encoding)
         el = paste(paste(currentNames, collapse="$"), sep="$", "recmacro")
-        eval(parse(text=paste(el,"<-recmacro"), keep.source=FALSE))
+        eval(.myparse(text=paste(el,"<-recmacro")))
         if(Verbose > 1)
           cat("recreation macro: ", substr(recmacro,0,20), " ...\n")
     } else if (ph$recordType == 5 && ExtractText){
         # Procedure Text
         mainproc = .readCharsWithEnc(pxpfile, ph$numDataBytes, encoding)
         el = paste(paste(currentNames, collapse="$"), sep="$", "mainproc")
-        eval(parse(text=paste(el,"<-mainproc"), keep.source=FALSE))
+        eval(.myparse(text=paste(el,"<-mainproc")))
         if(Verbose > 1)
           cat("main procedure: ", substr(mainproc,0,20), " ...\n")
     } else if (ph$recordType == 8 && ExtractText){
@@ -245,7 +245,7 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
         file = .ReadPackedFile(pxpfile, ph$numDataBytes, encoding,  Verbose)
         if(length(file) > 0){
           el = paste(paste(currentNames, collapse="$"), sep="$", file$name)
-          eval(parse(text=paste(el,"<-file$data"), keep.source=FALSE))
+          eval(.myparse(text=paste(el,"<-file$data")))
           if(Verbose > 1)
             cat("packed file ", file$name, ": ", substr(file$data,1,20), " ...\n")
         }
@@ -519,6 +519,12 @@ NULL
   l
 }
 
+# keep.source FALSE is a recent addition
+if(R.version$major>2) {
+  .myparse<-function(text) parse(text=text, keep.source=FALSE) 
+} else {
+  .myparse<-function(text) parse(text=text)
+}
 
 .ReadIgorBinary.V2<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
   myread=function(what="integer",size=4,...) readBin(con,endian=endian,what=what,size=size,...)
