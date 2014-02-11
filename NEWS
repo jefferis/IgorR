@@ -3,6 +3,7 @@ IgorR 0.7.1
 * Fix encoding issue of Igor pxp files containing high bytes.
   Pointed out by Brian Ripley on Solaris, fixed across all platforms with help
   from Ashley Manton.
+* Fix error on R<3.0.0 caused by use of new keep.source argument for parse().
 
 IgorR 0.7
 =========
