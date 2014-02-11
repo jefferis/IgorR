@@ -111,9 +111,11 @@ test_that("Read pxp files containing variables with higher characters", {
       expect_that(pxp$vars$myscalar,equals(1))
       expect_that(pxp$vars$mystring,equals("Hello!"))
       # should be the same on windows 1252, latin-1 and macintosh 
-      expect_that(pxp$vars$micron,equals("µ"))
+      expect_that(pxp$vars$micron,equals(iconv("\u00B5",from='UTF-8',to="UTF-8")))
       # different for windows 1252, latin-1 and macintosh 
-      expect_that(pxp$vars$pix6,equals("ππππππ"))
+      expect_that(pxp$vars$pix6,
+                  equals(iconv("\u03C0\u03C0\u03C0\u03C0\u03C0\u03C0",
+                               from='UTF-8',to='UTF-8')))
     })
 
 test_that("Read pxp history", {
