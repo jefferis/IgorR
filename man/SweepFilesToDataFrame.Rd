@@ -5,15 +5,15 @@
 SweepFilesToDataFrame(ff)
 }
 \arguments{
-  \item{ff}{paths to a set of sweep files}
+  \item{ff}{paths to a set of sweep files.}
 }
 \value{
-dataframe with rows for each sweep file
+A dataframe with rows for each sweep file.
 }
 \description{
 Note that this is still a little fragile if the lists
-produced by SummariseSweepFile do not have consistent field
-names
+produced by \code{\link{SummariseSweepFile}} do not have
+consistent field names.
 }
 \author{
 jefferis

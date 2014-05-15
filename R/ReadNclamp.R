@@ -6,9 +6,9 @@
 #' log tables are special Igor .pxp files that contain only variables.
 #' Each entry corresponds to a single run of an Nclamp protocol, 
 #' storing information like protocol name, run time etc.  
-#' @param f Path to the log file
-#' @param Verbose Whether to print status information while reading the file
-#' @return A dataframe containing a row for each acquisition protocol run
+#' @param f path to the log file.
+#' @param Verbose whether to print status information while reading the file.
+#' @return A dataframe containing a row for each acquisition protocol run.
 #' @author jefferis
 #' @export
 ReadNclampLogTable<-function(f,Verbose=FALSE){
@@ -44,16 +44,17 @@ ReadNclampLogTable<-function(f,Verbose=FALSE){
   d
 }
 
-#' Read all Nclamp log tables from a directory into a list 
-#' @param logfiledir Path to directory containing log files (pxp files)
-#' @param pattern Optional regular expression - see \code{\link{list.files}}
-#' @param ... additional parameters for ReadNclampLogTable
-#' @return named list containing one dataframe for each parsed log file
+#' Read all Nclamp log tables from a directory into a list
+#' 
+#' @param logfiledir path to directory containing log files (pxp files).
+#' @param pattern optional regular expression -- see \code{\link{list.files}}.
+#' @param ... additional parameters for \code{\link{ReadNclampLogTable}}.
+#' @return A named list containing one dataframe for each parsed log file.
 #' @author jefferis
 #' @export
 #' @examples
 #' \dontrun{
-#' ReadAllNclampLogTables("/GD/projects/PhysiologyData/logs")
+#' logfiles <- ReadAllNclampLogTables("/GD/projects/PhysiologyData/logs")
 #' str(logfiles)
 #' }
 ReadAllNclampLogTables<-function(logfiledir,pattern="_log[0-9]+[.]pxp$",...){
@@ -81,17 +82,18 @@ ReadAllNclampLogTables<-function(logfiledir,pattern="_log[0-9]+[.]pxp$",...){
 #' Extract summary information from an Nclamp/Igor Sweep File
 #' 
 #' e.g. for import into Physiology database
-#' @param f path to an Nclamp/Igor pxp format sweep file
-#' @param Verbose print details while parsing underlying pxp file
-#' @return a list of about 25 fields summarising the sweep file 
+#' @param f path to an Nclamp/Igor PXP format sweep file.
+#' @param Verbose if \code{TRUE}, print details while parsing underlying PXP
+#'   file.
+#' @return A list of about 25 fields summarising the sweep file.
 #' @author jefferis
 #' @export
 #' @import tools
 #' @examples
-#' l=SummariseSweepFile(system.file("igor","WedJul407c2_001.pxp",package="IgorR"))
-#' cat("There are",l$NumWaves,"waves in the file each of total duration",l$StimWaveLength,
-#'  "ms and sample duration",l$StimSampleInterval,"ms \n") 
-SummariseSweepFile<-function(f,Verbose=F){
+#' l <- SummariseSweepFile(system.file("igor", "WedJul407c2_001.pxp", package="IgorR"))
+#' cat("There are", l$NumWaves, "waves in the file each of total duration", l$StimWaveLength, 
+#'  "ms and sample duration", l$StimSampleInterval, "ms \n") 
+SummariseSweepFile<-function(f,Verbose=FALSE){
   s=read.pxp(f,Verbose=Verbose)
   
   fileinfo=file.info(f)
@@ -120,9 +122,9 @@ SummariseSweepFile<-function(f,Verbose=F){
 #' Summarise multiple sweep files into a single dataframe
 #' 
 #' Note that this is still a little fragile if the lists produced by 
-#' SummariseSweepFile do not have consistent field names
-#' @param ff paths to a set of sweep files 
-#' @return dataframe with rows for each sweep file  
+#' \code{\link{SummariseSweepFile}} do not have consistent field names.
+#' @param ff paths to a set of sweep files.
+#' @return A dataframe with rows for each sweep file.
 #' @author jefferis
 #' @seealso SummariseSweepFile
 #' @export
@@ -137,13 +139,14 @@ SweepFilesToDataFrame<-function(ff){
   do.call(rbind,lapply(ll,as.data.frame,stringsAsFactors=FALSE))
 }
 
-#' Update the csv file summarising the sweeps in an Nclamp data folder
+#' Update the CSV file summarising the sweeps in an Nclamp data folder
 #' 
-#' @param folder Path to the folder
-#' @param outfile Path to outfile (default: /path/to/datafolder/datafolder.csv) 
-#' @param action TODO update newer (default) or force update (not implemented)
-#' @param DryRun Report which files would be processed, but do nothing
-#' @return TRUE if something happened, FALSE otherwise
+#' @param folder path to the folder.
+#' @param outfile path to outfile (default: \code{/path/to/datafolder/datafolder.csv}).
+#' @param action update newer (default) or force update (not yet implemented).
+#' @param DryRun if \code{TRUE}, report which files would be processed, but do
+#'   nothing.
+#' @return \code{TRUE} if something happened, \code{FALSE} otherwise.
 #' @author jefferis
 #' @export
 UpdateSweepDataFrame<-function(folder,outfile=NULL,action=c("update","force"),DryRun=FALSE){

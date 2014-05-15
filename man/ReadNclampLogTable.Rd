@@ -5,14 +5,14 @@
 ReadNclampLogTable(f, Verbose = FALSE)
 }
 \arguments{
-  \item{f}{Path to the log file}
+  \item{f}{path to the log file.}
 
-  \item{Verbose}{Whether to print status information while
-  reading the file}
+  \item{Verbose}{whether to print status information while
+  reading the file.}
 }
 \value{
 A dataframe containing a row for each acquisition protocol
-run
+run.
 }
 \description{
 log tables are special Igor .pxp files that contain only

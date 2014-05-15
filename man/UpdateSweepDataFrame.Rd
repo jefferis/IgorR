@@ -1,27 +1,27 @@
 \name{UpdateSweepDataFrame}
 \alias{UpdateSweepDataFrame}
-\title{Update the csv file summarising the sweeps in an Nclamp data folder}
+\title{Update the CSV file summarising the sweeps in an Nclamp data folder}
 \usage{
 UpdateSweepDataFrame(folder, outfile = NULL, action = c("update", "force"),
   DryRun = FALSE)
 }
 \arguments{
-  \item{folder}{Path to the folder}
+  \item{folder}{path to the folder.}
 
-  \item{outfile}{Path to outfile (default:
-  /path/to/datafolder/datafolder.csv)}
+  \item{outfile}{path to outfile (default:
+  \code{/path/to/datafolder/datafolder.csv}).}
 
-  \item{action}{TODO update newer (default) or force update
-  (not implemented)}
+  \item{action}{update newer (default) or force update (not
+  yet implemented).}
 
-  \item{DryRun}{Report which files would be processed, but
-  do nothing}
+  \item{DryRun}{if \code{TRUE}, report which files would be
+  processed, but do nothing.}
 }
 \value{
-TRUE if something happened, FALSE otherwise
+\code{TRUE} if something happened, \code{FALSE} otherwise.
 }
 \description{
-Update the csv file summarising the sweeps in an Nclamp
+Update the CSV file summarising the sweeps in an Nclamp
 data folder
 }
 \author{
