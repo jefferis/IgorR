@@ -1,6 +1,6 @@
 #IgorR
 
-[![Build Status](https://travis-ci.org/jefferis/IgorR.png)](https://travis-ci.org/jefferis/IgorR)
+[![Build Status](https://travis-ci.org/jefferis/IgorR.svg)](https://travis-ci.org/jefferis/IgorR)
 
 Introduction
 ============
