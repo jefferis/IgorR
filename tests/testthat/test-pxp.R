@@ -111,7 +111,7 @@ test_that("Read pxp file structure only", {
       
       # stored structure
       pxp.str.baseline<-readRDS('igor/WedJul407c2_001_str.rds')
-      expect_equal(pxp, pxp.str.baseline)
+      expect_equivalent(pxp, pxp.str.baseline)
     })
 
 test_that("Read pxp files containing variables with higher characters", {
