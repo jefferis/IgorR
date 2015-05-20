@@ -213,12 +213,12 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
       x=.ReadWaveRecord(pxpfile,endian,Verbose=ifelse(Verbose==2,TRUE,FALSE),
           HeaderOnly=StructureOnly,ReturnTimeSeries=ReturnTimeSeries,...)
       if(!is.null(x)){
-        if(is.null(attr(x,"WaveHeader")$WaveName)) {
+        wavename=attr(x,"WaveHeader")$WaveName
+        if(is.null(wavename)) {
           # assume this is a wave name
-          el=paste(paste(currentNames,collapse="$"),sep="$",x)
-        } else {
-          el=paste(paste(currentNames,collapse="$"),sep="$",attr(x,"WaveHeader")$WaveName)
+          wavename=x
         }
+        el=paste(paste(currentNames,collapse="$"),sep="$",wavename)
         # store the record if required
         if(missing(regex) || any( grep(regex,el) )){
           eval(.myparse(text=paste(el,"<-x")))
@@ -257,7 +257,9 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
         }
     } else if (ph$recordType==9){
       # Open Data Folder
-      currentNames=c(currentNames,.ReadDataFolderStartRecord(pxpfile,endian))
+      foldername=.ReadDataFolderStartRecord(pxpfile,endian)
+      # backquote protects funny folder names with no effect on valid names
+      currentNames=c(currentNames, sprintf("`%s`", foldername))
     } else if (ph$recordType==10){
       # Close Data Folder
       currentNames=currentNames[-length(currentNames)]
@@ -309,11 +311,11 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
 }
 .readNullTermString<-function(con,totalLength,encoding,...){
   if(totalLength==0) return ("")
-  s=readBin(con,what=character(),n=1,size=1,...)
-  # note totalLength is the length including the null terminator
-  # 2007-10-15 - fixed a bug with reading strings that have 
-  # high bytes after the first null terminator
-  readBin(con,what="integer",size=1,n=totalLength-(nchar(s)+1),...)
+  # first read in exactly the number of raw bytes we've been told
+  # note totalLength is the length including the null terminator (if present)
+  rawc=readBin(con, what='raw', n=totalLength)
+  # then read a string from that - readBin will drop any null terminator
+  s=readBin(rawc, what="character")
   if(missing(encoding)) return(s)
   else return(iconv(s,from=encoding,to=""))
 }
