@@ -311,11 +311,11 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
 }
 .readNullTermString<-function(con,totalLength,encoding,...){
   if(totalLength==0) return ("")
-  s=readBin(con,what=character(),n=1,size=1,...)
-  # note totalLength is the length including the null terminator
-  # 2007-10-15 - fixed a bug with reading strings that have 
-  # high bytes after the first null terminator
-  readBin(con,what="integer",size=1,n=totalLength-(nchar(s)+1),...)
+  # first read in exactly the number of raw bytes we've been told
+  # note totalLength is the length including the null terminator (if present)
+  rawc=readBin(con, what='raw', n=totalLength)
+  # then read a string from that - readBin will drop any null terminator
+  s=readBin(rawc, what="character")
   if(missing(encoding)) return(s)
   else return(iconv(s,from=encoding,to=""))
 }
