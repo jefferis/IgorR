@@ -1,5 +1,5 @@
 #IgorR
-[![DOI](https://img.shields.io/badge/doi-10.5281%2Fzenodo.10230-blue.svg)](http://dx.doi.org/10.5281/zenodo.10230) [![Build Status](https://travis-ci.org/jefferis/IgorR.svg)](https://travis-ci.org/jefferis/IgorR)
+[![DOI](https://img.shields.io/badge/doi-10.5281%2Fzenodo.10230-blue.svg)](http://dx.doi.org/10.5281/zenodo.10230) [![Build Status](https://travis-ci.org/jefferis/IgorR.svg?branch=master)](https://travis-ci.org/jefferis/IgorR)
 
 Introduction
 ============
