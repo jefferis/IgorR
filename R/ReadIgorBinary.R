@@ -257,7 +257,9 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
         }
     } else if (ph$recordType==9){
       # Open Data Folder
-      currentNames=c(currentNames,.ReadDataFolderStartRecord(pxpfile,endian))
+      foldername=.ReadDataFolderStartRecord(pxpfile,endian)
+      # backquote protects funny folder names with no effect on valid names
+      currentNames=c(currentNames, sprintf("`%s`", foldername))
     } else if (ph$recordType==10){
       # Close Data Folder
       currentNames=currentNames[-length(currentNames)]
