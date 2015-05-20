@@ -80,8 +80,9 @@ test_that("Igor Wave to R time series", {
     })
 
 test_that("Convert Igor Wave to R time series when reading pxp file", {
-      pxp<-read.pxp(system.file("igor/WedJul407c2_001.pxp", package = 'IgorR'),
-                    regex='Record',ReturnTimeSeries=TRUE)
+      expect_warning(pxp<-read.pxp(system.file("igor/WedJul407c2_001.pxp", package = 'IgorR'),
+                    regex='Record',ReturnTimeSeries=TRUE), 
+                    regexp = 'object must have one or more observations')
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
       RecordA0<-pxp[['RecordA0']]
