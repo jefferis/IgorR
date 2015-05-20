@@ -213,12 +213,12 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
       x=.ReadWaveRecord(pxpfile,endian,Verbose=ifelse(Verbose==2,TRUE,FALSE),
           HeaderOnly=StructureOnly,ReturnTimeSeries=ReturnTimeSeries,...)
       if(!is.null(x)){
-        if(is.null(attr(x,"WaveHeader")$WaveName)) {
+        wavename=attr(x,"WaveHeader")$WaveName
+        if(is.null(wavename)) {
           # assume this is a wave name
-          el=paste(paste(currentNames,collapse="$"),sep="$",x)
-        } else {
-          el=paste(paste(currentNames,collapse="$"),sep="$",attr(x,"WaveHeader")$WaveName)
+          wavename=x
         }
+        el=paste(paste(currentNames,collapse="$"),sep="$",wavename)
         # store the record if required
         if(missing(regex) || any( grep(regex,el) )){
           eval(.myparse(text=paste(el,"<-x")))
