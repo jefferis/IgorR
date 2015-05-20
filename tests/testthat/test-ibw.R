@@ -35,5 +35,5 @@ test_that("Processing of dates", {
 })
 
 test_that("Processing of funny null terminated strings", {
-  expect_is(bad_string_wave<-read.ibw('../igor/bad_null_string.ibw'), 'numeric')
+  expect_is(bad_string_wave<-read.ibw('igor/bad_null_string.ibw'), 'numeric')
 })
