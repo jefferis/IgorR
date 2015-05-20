@@ -160,3 +160,8 @@ test_that("Read pxp ignores formatted notebook", {
       pxp<-read.pxp("igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
       expect_true(is.null(pxp$Notebook1))
     })
+
+test_that("Read pxp can cope with invalid folder names", {
+  pxp<-read.pxp("igor/bad_foldername4.pxp")
+  expect_true("_default_" %in% names(pxp$root))
+})
