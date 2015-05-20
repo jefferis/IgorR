@@ -108,6 +108,10 @@ test_that("Read pxp file structure only", {
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
       expect_true( all(sapply(pxp[record_names],is.na)) )
+      
+      # stored structure
+      pxp.str.baseline<-readRDS('igor/WedJul407c2_001_str.rds')
+      expect_equal(pxp, pxp.str.baseline)
     })
 
 test_that("Read pxp files containing variables with higher characters", {
