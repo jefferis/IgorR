@@ -24,7 +24,7 @@ To install the latest development version from github
 ```r
 # install hadley's devtools if required
 if(!require('devtools')) install.packages('devtools')
-devtools::install_github('jefferis/IgorR@pub')
+devtools::install_github('jefferis/IgorR')
 ```
 
 Development Install
