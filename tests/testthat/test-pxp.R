@@ -5,7 +5,7 @@
 
 context("Test handling of Igor pxp files")
 
-pxp<-read.pxp("../igor/WedJul407c2_001.pxp")
+pxp<-read.pxp(system.file("igor/WedJul407c2_001.pxp", package = 'IgorR'))
 
 test_that("Read Igor packed experiment file", {
       
@@ -80,7 +80,8 @@ test_that("Igor Wave to R time series", {
     })
 
 test_that("Convert Igor Wave to R time series when reading pxp file", {
-      pxp<-read.pxp("../igor/WedJul407c2_001.pxp",regex='Record',ReturnTimeSeries=TRUE)
+      pxp<-read.pxp(system.file("igor/WedJul407c2_001.pxp", package = 'IgorR'),
+                    regex='Record',ReturnTimeSeries=TRUE)
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
       RecordA0<-pxp[['RecordA0']]
@@ -91,7 +92,8 @@ test_that("Convert Igor Wave to R time series when reading pxp file", {
     })
 
 test_that("Read pxp file loading only waves matching regex", {
-      pxp<-read.pxp("../igor/WedJul407c2_001.pxp",regex='Record')
+      pxp<-read.pxp(system.file("igor/WedJul407c2_001.pxp", package = 'IgorR'),
+                    regex='Record')
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
       # restrict to waves only
@@ -100,14 +102,15 @@ test_that("Read pxp file loading only waves matching regex", {
     })
 
 test_that("Read pxp file structure only", {
-      pxp<-read.pxp("../igor/WedJul407c2_001.pxp",StructureOnly = TRUE)
+      pxp<-read.pxp(system.file("igor/WedJul407c2_001.pxp", package = 'IgorR'),
+                    StructureOnly = TRUE)
       record_names = paste("Record",
           rep(c("A","B"),99), rep(0:99,rep(2,100)), sep="")
       expect_true( all(sapply(pxp[record_names],is.na)) )
     })
 
 test_that("Read pxp files containing variables with higher characters", {
-      pxp<-read.pxp("../igor/ExperimentWithHigherChars.pxp")
+      pxp<-read.pxp("igor/ExperimentWithHigherChars.pxp")
       expect_that(pxp$vars$myscalar,equals(1))
       expect_that(pxp$vars$mystring,equals("Hello!"))
       # should be the same on windows 1252, latin-1 and macintosh 
@@ -119,36 +122,36 @@ test_that("Read pxp files containing variables with higher characters", {
     })
 
 test_that("Read pxp history", {
-      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      pxp<-read.pxp("igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
       expect_false(is.null(pxp$history))
       expect_true(nchar(pxp$history) > 0)
     })
 
 test_that("Read pxp recreation macro", {
-      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      pxp<-read.pxp("igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
       expect_false(is.null(pxp$recmacro))
       expect_true(nchar(pxp$recmacro) > 0)
     })
 
 test_that("Read pxp main procedure", {
-      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      pxp<-read.pxp("igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
       expect_false(is.null(pxp$mainproc))
       expect_equal(pxp$mainproc, "#pragma rtGlobals=3\t\t// Use modern global access method and strict wave access.\r\n")
     })
 
 test_that("Read pxp embedded procedure", {
-      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      pxp<-read.pxp("igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
       expect_false(is.null(pxp$Proc0))
       expect_equal(pxp$Proc0, "#pragma rtGlobals=3\t\t// Use modern global access method and strict wave access.\r\n")
     })
 
 test_that("Read pxp plain notebook", {
-      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      pxp<-read.pxp("igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
       expect_false(is.null(pxp$Notebook0))
       expect_equal(pxp$Notebook0, "plain notebook!")
     })
 
 test_that("Read pxp ignores formatted notebook", {
-      pxp<-read.pxp("../igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
+      pxp<-read.pxp("igor/ExperimentWithProcHistoryAndNBs.pxp", ExtractText=T)
       expect_true(is.null(pxp$Notebook1))
     })

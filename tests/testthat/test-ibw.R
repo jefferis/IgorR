@@ -6,7 +6,7 @@
 context("Verify reading of Igor ibw files")
 
 test_that("Read Igor v5 file", {
-      expect_that (w5<-read.ibw('../igor/version5.ibw'),
+      expect_that (w5<-read.ibw(system.file('igor/version5.ibw', package = 'IgorR')),
           is_a("numeric"),'read igor v5 wave without error')
       expect_that(attr(w5,'BinHeader')$version,
           equals(5))
@@ -16,7 +16,7 @@ test_that("Read Igor v5 file", {
     })
 
 test_that("Read Igor v2 file", {
-      expect_that (w2<-read.ibw('../igor/version2.ibw'),
+      expect_that (w2<-read.ibw(system.file('igor/version2.ibw', package = 'IgorR')),
           is_a("numeric"),'read igor v2 wave without error')
       expect_that(attr(w2,'BinHeader')$version,
           equals(2))
