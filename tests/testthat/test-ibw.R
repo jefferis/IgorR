@@ -33,3 +33,7 @@ test_that("Processing of dates", {
   # DISABLED due to OS dependent results that I cannot fix
   # expect_equivalent(.convertIgorDate(3427533421),as.POSIXct("2012-08-11 13:37:01"))
 })
+
+test_that("Processing of funny null terminated strings", {
+  expect_is(bad_string_wave<-read.ibw('../igor/bad_null_string.ibw'), 'numeric')
+})
