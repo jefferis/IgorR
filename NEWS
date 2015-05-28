@@ -1,3 +1,20 @@
+IgorR 0.8
+=========
+* fix bug in reading igor waves with embedded non-null terminated strings (#3)
+* fix bug in reading igor pxp files with names that are not valid R names e.g. 
+  begining with an underscore. (#2)
+* Thanks to Troy Margrie, Mateo Velez and Charly Rousseau for the reports/test
+  data
+* Minor description fixes for R 3.2.0
+* dev: switch to tests in tests/testthat (making them an optional install) but 
+  keeping some igor waves required for examples in inst/igor
+* dev: switch to new style travis config
+* dev: upgrade to roxygen2 4.1.1
+
+IgorR 0.7.2
+===========
+* minor doc fixes
+
 IgorR 0.7.1
 ===========
 * Fix encoding issue of Igor pxp files containing high bytes.
