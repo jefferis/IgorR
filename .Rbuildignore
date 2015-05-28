@@ -6,3 +6,4 @@ private/
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^cran-comments\.md$
+^revdep$
