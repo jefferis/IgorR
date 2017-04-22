@@ -149,6 +149,7 @@ SweepFilesToDataFrame<-function(ff){
 #' @return \code{TRUE} if something happened, \code{FALSE} otherwise.
 #' @author jefferis
 #' @export
+#' @importFrom utils read.csv write.csv
 UpdateSweepDataFrame<-function(folder,outfile=NULL,action=c("update","force"),DryRun=FALSE){
   action=match.arg(action)
   folder=path.expand(folder) # replace ~ by full path if necessary

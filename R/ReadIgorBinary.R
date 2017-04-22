@@ -796,6 +796,7 @@ if(R.version$major>2) {
 #' @return a time series or multi time series (ts, mts)
 #' @author jefferis
 #' @export
+#' @importFrom stats ts
 WaveToTimeSeries<-function(WaveData,ReturnOriginalDataOnError=TRUE){
   if(is.list(WaveData)) {
     # process separate waves into multi wave time series
