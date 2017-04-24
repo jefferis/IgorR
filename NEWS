@@ -1,3 +1,7 @@
+IgorR 0.8.1
+===========
+* Fix namespace and canonical URL issues for CRAN
+
 IgorR 0.8
 =========
 * fix bug in reading igor waves with embedded non-null terminated strings (#3)
