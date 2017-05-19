@@ -1,3 +1,8 @@
+## Changes since last CRAN release
+
+* fixes namespace issues resulting in NOTEs in current CRAN build
+* fixes some URLs in README
+
 ## Test environments
 * local OS X install, R 3.4.0
 * ubuntu 12.04 (on travis-ci), R 3.3.3
