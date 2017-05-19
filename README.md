@@ -14,7 +14,7 @@ Installation
 ============
 Standard Install
 ----------------
-Install the release version from [CRAN](http://cran.r-project.org/)
+Install the release version from [CRAN](https://cran.r-project.org/)
 
 ```r
 install.packages('IgorR')
