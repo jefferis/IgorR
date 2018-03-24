@@ -2,8 +2,11 @@ Package: IgorR
 Type: Package
 Title: Read Binary Files Saved by 'Igor Pro' (Including 'Neuromatic' Data)
 Version: 0.8.1
-Author: Greg Jefferis with contributions from Thomas Braun
-Maintainer: Greg Jefferis <jefferis@gmail.com>
+Authors@R: c(
+    person("Gregory","Jefferis", email="jefferis@gmail.com", 
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0587-9355")),
+    person("Thomas", "Braun", role = "ctb")
+    )
 Description: Provides function to read data from the 'Igor Pro' data analysis
     program by Wavemetrics. The data formats supported are 'Igor' packed 
     experiment format (pxp) and 'Igor' binary wave (ibw). See: 
