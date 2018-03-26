@@ -1,0 +1,20 @@
+reference:
+- title: Package Help
+  contents:
+  - '`IgorR-package`'
+  - '`IgorR-private`'
+- title: Igor
+  desc: Basic functions to read Igor Pro files
+  contents:
+  - '`read.ibw`'
+  - '`read.pxp`'
+  - '`WaveToTimeSeries`'
+  - '`tsp.igorwave`'
+- title: NClamp
+  desc: Functions to handle NClamp data acquisition files
+  contents:
+  - '`SummariseSweepFile`'
+  - '`SweepFilesToDataFrame`'
+  - '`UpdateSweepDataFrame`'
+  - '`ReadNclampLogTable`'
+  - '`ReadAllNclampLogTables`'
