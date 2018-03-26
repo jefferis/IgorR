@@ -1,3 +1,7 @@
+IgorR 0.8.2
+===========
+* minor: package docs, spelling, author formatting
+
 IgorR 0.8.1
 ===========
 * Fix namespace and canonical URL issues for CRAN
