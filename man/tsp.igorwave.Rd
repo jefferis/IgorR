@@ -2,12 +2,12 @@
 % Please edit documentation in R/ReadIgorBinary.R
 \name{tsp.igorwave}
 \alias{tsp.igorwave}
-\title{Return tsp attribute of igor wave (start, end, frequency)}
+\title{Return tsp attribute of Igor wave (start, end, frequency)}
 \usage{
 tsp.igorwave(wave)
 }
 \arguments{
-\item{wave}{Igor wave loaded by read.ibw or read.pxp}
+\item{wave}{Igor wave loaded by \code{read.ibw} or\code{read.pxp}}
 }
 \value{
 numeric vector with elements start, end, frequency
@@ -16,7 +16,7 @@ numeric vector with elements start, end, frequency
 Note that end = (npts-1) * deltat
 }
 \seealso{
-\code{tsp}
+\code{\link{tsp}}
 }
 \author{
 jefferis

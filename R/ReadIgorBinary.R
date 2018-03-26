@@ -785,15 +785,15 @@ if(R.version$major>2) {
   return (WaveData)
 }
 
-#' Convert an Igor wave (or list of waves) loaded by read.ibw into an R time series 
+#' Convert an Igor wave (wave list) loaded by read.ibw into an R time series
 #' 
 #' Where there are multiple waves, they are assumed to be of compatible lengths 
-#' so that they can be joined together by cbind.
+#' so that they can be joined together by \code{cbind}.
 #' 
 #' @param WaveData, a wave or list of waves
 #' @param ReturnOriginalDataOnError If we can't make a time series, return
 #'  return original data (default TRUE)
-#' @return a time series or multi time series (ts, mts)
+#' @return a time series or multi time series (\code{ts}, \code{mts})
 #' @author jefferis
 #' @export
 #' @importFrom stats ts
@@ -811,13 +811,13 @@ WaveToTimeSeries<-function(WaveData,ReturnOriginalDataOnError=TRUE){
   } else res
 }
 
-#' Return tsp attribute of igor wave (start, end, frequency)
+#' Return tsp attribute of Igor wave (start, end, frequency)
 #' 
 #' Note that end = (npts-1) * deltat
-#' @param wave Igor wave loaded by read.ibw or read.pxp
+#' @param wave Igor wave loaded by \code{read.ibw} or\code{read.pxp}
 #' @return numeric vector with elements start, end, frequency
 #' @author jefferis
-#' @seealso \code{tsp}
+#' @seealso \code{\link{tsp}}
 #' @export
 tsp.igorwave<-function(wave){
   bh=attr(wave,"BinHeader")

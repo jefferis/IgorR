@@ -3,7 +3,7 @@
 # Author: jefferis
 ###############################################################################
 
-context("Verify reading of Igor ibw files")
+context("Verify reading of Igor IBW files")
 
 test_that("Read Igor v5 file", {
       expect_that (w5<-read.ibw(system.file('igor/version5.ibw', package = 'IgorR')),
