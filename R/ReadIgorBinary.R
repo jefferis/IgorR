@@ -78,6 +78,7 @@
 #' # make a list containing the wave's data in the users's environment
 #' wavename=read.ibw(system.file("igor","version5.ibw",package="IgorR"),MakeWave=TRUE) 
 #' sum(get(wavename))
+#' @family igor-io
 read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
     MakeWave=FALSE,HeaderOnly=FALSE){
   if (is.character(wavefile)) {
@@ -152,6 +153,7 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
 #' @author jefferis
 #' @export
 #' @import bitops
+#' @family igor-io
 #' @examples 
 #' r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
 read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
@@ -786,17 +788,19 @@ if(R.version$major>2) {
 }
 
 #' Convert an Igor wave (wave list) loaded by read.ibw into an R time series
-#' 
-#' Where there are multiple waves, they are assumed to be of compatible lengths 
+#'
+#' Where there are multiple waves, they are assumed to be of compatible lengths
 #' so that they can be joined together by \code{cbind}.
-#' 
+#'
 #' @param WaveData, a wave or list of waves
 #' @param ReturnOriginalDataOnError If we can't make a time series, return
-#'  return original data (default TRUE)
-#' @return a time series or multi time series (\code{ts}, \code{mts})
+#'   return original data (default TRUE)
+#' @return a time series or multi time series (\code{\link[stats]{ts}},
+#'   \code{mts})
 #' @author jefferis
 #' @export
 #' @importFrom stats ts
+#' @family igor-io
 WaveToTimeSeries<-function(WaveData,ReturnOriginalDataOnError=TRUE){
   if(is.list(WaveData)) {
     # process separate waves into multi wave time series
@@ -817,7 +821,7 @@ WaveToTimeSeries<-function(WaveData,ReturnOriginalDataOnError=TRUE){
 #' @param wave Igor wave loaded by \code{read.ibw} or\code{read.pxp}
 #' @return numeric vector with elements start, end, frequency
 #' @author jefferis
-#' @seealso \code{\link{tsp}}
+#' @seealso \code{\link[stats]{tsp}}
 #' @export
 tsp.igorwave<-function(wave){
   bh=attr(wave,"BinHeader")

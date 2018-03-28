@@ -51,6 +51,10 @@ override the \code{IgorPlatform} argument.
 \examples{
 r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
 }
+\seealso{
+Other igor-io: \code{\link{WaveToTimeSeries}},
+  \code{\link{read.ibw}}
+}
 \author{
 jefferis
 }

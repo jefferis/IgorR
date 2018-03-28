@@ -16,7 +16,7 @@ numeric vector with elements start, end, frequency
 Note that end = (npts-1) * deltat
 }
 \seealso{
-\code{\link{tsp}}
+\code{\link[stats]{tsp}}
 }
 \author{
 jefferis
