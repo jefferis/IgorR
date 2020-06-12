@@ -372,10 +372,10 @@ igor_date_origin<-as.numeric(ISOdate(1904,1,1,hour=0,tz=""))
 #' @name IgorR-private
 NULL
 
-#' @title Read the a short record header from the current location in a PXP file
-#' 
-#' Note that the recordType will be one of the constants from Igor's
-#' enum PackedFileRecordType
+#' @description \code{.ReadPackedHeader} reads the short record header from the
+#'   current location in a PXP file
+#' @details Note that the \code{recordType} will be one of the constants from
+#'   Igor's enum \code{PackedFileRecordType}
 #' @param con an R connection to the file we are reading
 #' @param endian either little or big
 #' @return a list containing information about the current record
