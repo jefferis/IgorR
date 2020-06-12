@@ -4,8 +4,16 @@
 \alias{read.pxp}
 \title{Reads an Igor Pro Packed Experiment (.pxp) file}
 \usage{
-read.pxp(pxpfile, regex, ReturnTimeSeries = FALSE, Verbose = FALSE,
-  StructureOnly = FALSE, ExtractText = FALSE, IgorPlatform = NULL, ...)
+read.pxp(
+  pxpfile,
+  regex,
+  ReturnTimeSeries = FALSE,
+  Verbose = FALSE,
+  StructureOnly = FALSE,
+  ExtractText = FALSE,
+  IgorPlatform = NULL,
+  ...
+)
 }
 \arguments{
 \item{pxpfile}{character vector naming a PXP file or an R \link{connection}.}
@@ -52,9 +60,11 @@ override the \code{IgorPlatform} argument.
 r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
 }
 \seealso{
-Other igor-io: \code{\link{WaveToTimeSeries}},
-  \code{\link{read.ibw}}
+Other igor-io: 
+\code{\link{WaveToTimeSeries}()},
+\code{\link{read.ibw}()}
 }
 \author{
 jefferis
 }
+\concept{igor-io}

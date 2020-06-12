@@ -4,8 +4,12 @@
 \alias{UpdateSweepDataFrame}
 \title{Update the CSV file summarising the sweeps in an Nclamp data folder}
 \usage{
-UpdateSweepDataFrame(folder, outfile = NULL, action = c("update", "force"),
-  DryRun = FALSE)
+UpdateSweepDataFrame(
+  folder,
+  outfile = NULL,
+  action = c("update", "force"),
+  DryRun = FALSE
+)
 }
 \arguments{
 \item{folder}{path to the folder.}

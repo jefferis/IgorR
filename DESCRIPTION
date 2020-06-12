@@ -22,5 +22,5 @@ Suggests:
     testthat
 License: GPL (>= 2)
 LazyLoad: yes
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.0
 Language: en-GB

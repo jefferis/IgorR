@@ -4,8 +4,13 @@
 \alias{read.ibw}
 \title{Read binary files in the Igor Binary Wave format (IBW)}
 \usage{
-read.ibw(wavefile, Verbose = FALSE, ReturnTimeSeries = FALSE,
-  MakeWave = FALSE, HeaderOnly = FALSE)
+read.ibw(
+  wavefile,
+  Verbose = FALSE,
+  ReturnTimeSeries = FALSE,
+  MakeWave = FALSE,
+  HeaderOnly = FALSE
+)
 }
 \arguments{
 \item{wavefile}{either a character vector containing the path to a file or an
@@ -40,9 +45,11 @@ wavename=read.ibw(system.file("igor","version5.ibw",package="IgorR"),MakeWave=TR
 sum(get(wavename))
 }
 \seealso{
-Other igor-io: \code{\link{WaveToTimeSeries}},
-  \code{\link{read.pxp}}
+Other igor-io: 
+\code{\link{WaveToTimeSeries}()},
+\code{\link{read.pxp}()}
 }
 \author{
 jefferis
 }
+\concept{igor-io}
