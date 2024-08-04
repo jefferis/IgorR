@@ -14,7 +14,7 @@ Installation
 ============
 Standard Install
 ----------------
-Install the release version from [CRAN](https://cran.r-project.org/)
+NB IgorR is off CRAN due to an unfixed bug with windows text on tecent versions of R. Whenever it is back there you can install the release version from [CRAN](https://cran.r-project.org/)
 
 ```r
 install.packages('IgorR')
@@ -25,9 +25,9 @@ Github Install
 To install the latest development version from github
 
 ```r
-# install hadley's devtools if required
-if(!require('devtools')) install.packages('devtools')
-devtools::install_github('jefferis/IgorR')
+# install remotes package if required
+if(!require('remotes')) install.packages('remotes')
+remotes::install_github('jefferis/IgorR')
 ```
 
 Development Install
