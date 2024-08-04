@@ -14,6 +14,5 @@
 #'
 #' @name IgorR-package
 #' @aliases IgorR
-#' @docType package
 #' @keywords package
-NULL
+"_PACKAGE"
