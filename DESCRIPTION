@@ -26,4 +26,5 @@ LazyLoad: yes
 RoxygenNote: 7.3.2
 Language: en-GB
 Encoding: UTF-8
-URL: https://jefferis.github.io/IgorR/
+URL: https://github.com/jefferis/IgorR, https://jefferis.github.io/IgorR/
+BugReports: https://github.com/jefferis/IgorR/issues
