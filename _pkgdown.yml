@@ -1,3 +1,6 @@
+url: https://jefferis.github.io/IgorR/
+template:
+  bootstrap: 5
 reference:
 - title: Package Help
   contents:
