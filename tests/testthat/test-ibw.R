@@ -29,13 +29,12 @@ test_that("Processing of dates", {
   # print secs2Time(3444214517, 3) 
   # 14:15:17 
   expect_equivalent(.convertIgorDate(3444214517, tz="GMT"),as.POSIXct("2013-02-20 14:15:17", tz = 'GMT'))
-  expect_equivalent(.convertIgorDate(3444214517, tz="GMT"),as.POSIXct("2013-02-20 14:15:17", tz = 'GMT'))
+  expect_equivalent(.convertIgorDate(3444214517, tz="Africa/Banjul"),as.POSIXct("2013-02-20 14:15:17", tz = 'Africa/Banjul'))
   expect_equivalent(.convertIgorDate(3444214517, tz="Europe/London"),as.POSIXct("2013-02-20 14:15:17", tz = 'Europe/London'))
   # from nm20120811c1_016.pxp 
-  # current implementation says 13:37 on my laptop, lmb cluster and mac in PDT
+  # old implementation said 13:37 on my laptop, lmb cluster and mac in PDT
   # but mtime of file and embedded time string is 12:37 
   # and this is also what I get on a sunos machine in PDT
-  # DISABLED due to OS dependent results that I cannot fix
   expect_equivalent(.convertIgorDate(3427533421, tz = 'GMT'),as.POSIXct("2012-08-11 12:37:01", tz='GMT'))
   expect_equivalent(.convertIgorDate(3427533421, tz = 'Europe/London'),as.POSIXct("2012-08-11 12:37:01", tz='Europe/London'))
   
