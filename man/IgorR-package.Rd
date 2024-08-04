@@ -19,6 +19,15 @@ Neuromatic/Nclamp packages for recording and analysing neuronal #data. See
 Key functions in the package include \code{\link{read.ibw}},
 \code{\link{read.pxp}}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/jefferis/IgorR}
+  \item \url{https://jefferis.github.io/IgorR/}
+  \item Report bugs at \url{https://github.com/jefferis/IgorR/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Gregory Jefferis \email{jefferis@gmail.com} (\href{https://orcid.org/0000-0002-0587-9355}{ORCID})
 
