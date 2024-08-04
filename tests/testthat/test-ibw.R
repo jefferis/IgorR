@@ -25,13 +25,26 @@ test_that("Read Igor v2 file", {
     })
 
 test_that("Processing of dates", {
-  expect_equivalent(.convertIgorDate(3444214517),as.POSIXct("2013-02-20 14:15:17"))
+  # when in GMT timezone (Banjul, The Gambia) or BST Igor says
+  # print secs2Time(3444214517, 3) 
+  # 14:15:17 
+  expect_equivalent(.convertIgorDate(3444214517, tz="GMT"),as.POSIXct("2013-02-20 14:15:17", tz = 'GMT'))
+  expect_equivalent(.convertIgorDate(3444214517, tz="GMT"),as.POSIXct("2013-02-20 14:15:17", tz = 'GMT'))
+  expect_equivalent(.convertIgorDate(3444214517, tz="Europe/London"),as.POSIXct("2013-02-20 14:15:17", tz = 'Europe/London'))
   # from nm20120811c1_016.pxp 
   # current implementation says 13:37 on my laptop, lmb cluster and mac in PDT
   # but mtime of file and embedded time string is 12:37 
   # and this is also what I get on a sunos machine in PDT
   # DISABLED due to OS dependent results that I cannot fix
-  expect_equivalent(.convertIgorDate(3427533421),as.POSIXct("2012-08-11 13:37:01"))
+  expect_equivalent(.convertIgorDate(3427533421, tz = 'GMT'),as.POSIXct("2012-08-11 12:37:01", tz='GMT'))
+  expect_equivalent(.convertIgorDate(3427533421, tz = 'Europe/London'),as.POSIXct("2012-08-11 12:37:01", tz='Europe/London'))
+  
+  # when in GMT timezone or BST Igor says
+  # print secs2Time(3805612788, 3) 
+  # 10:39:48
+  expect_equivalent(.convertIgorDate(3805612788, tz='GMT'),as.POSIXct("2024-08-04 10:39:48", tz='GMT'))
+  expect_equivalent(.convertIgorDate(3805612788, tz='Europe/London'),as.POSIXct("2024-08-04 10:39:48", tz='Europe/London'))
+  expect_equivalent(.convertIgorDate(3805612788, tz='America/New_York'),as.POSIXct("2024-08-04 10:39:48", tz='America/New_York'))
 })
 
 test_that("Processing of funny null terminated strings", {

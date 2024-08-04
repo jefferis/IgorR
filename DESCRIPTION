@@ -16,7 +16,8 @@ Description: Provides function to read data from the 'Igor Pro' data analysis
     https://github.com/SilverLabUCL/NeuroMatic for details.
 Imports:
     bitops,
-    tools
+    tools,
+    timechange
 Suggests:
     spelling,
     testthat
