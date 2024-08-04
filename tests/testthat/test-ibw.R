@@ -31,7 +31,7 @@ test_that("Processing of dates", {
   # but mtime of file and embedded time string is 12:37 
   # and this is also what I get on a sunos machine in PDT
   # DISABLED due to OS dependent results that I cannot fix
-  # expect_equivalent(.convertIgorDate(3427533421),as.POSIXct("2012-08-11 13:37:01"))
+  expect_equivalent(.convertIgorDate(3427533421),as.POSIXct("2012-08-11 13:37:01"))
 })
 
 test_that("Processing of funny null terminated strings", {
