@@ -344,19 +344,9 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
 # results regardless of the local timezone of the test machine
 .convertIgorDate<-function(dateval, tz=""){
   igor_origin=ISOdatetime(1904,1,1,hour=0,min = 0, sec=0, tz=tz)
-  igor_origin_utc=ISOdatetime(1904,1,1,hour=0,min = 0, sec=0, tz='GMT')
-  origin_offset=as.numeric(igor_origin)-as.numeric(igor_origin_utc)
-  
-  dateval=dateval+as.numeric(igor_origin)
-  res=as.POSIXct(dateval, tz = tz)
-  # this takes the same clock time (ie hms) but switches time zone, thereby
-  # changing the moment in time
-  res_utc=timechange::time_force_tz(res, tz = 'GMT')
-  res_offset=as.numeric(res)-as.numeric(res_utc)
-  
-  # DST correction
-  dst_correction=origin_offset-res_offset
-  res=res-dst_correction
+  # this takes care of tz offset differences between the actual date and the origin
+  # e.g. because date is during daylight savings (but origin was not)
+  res=timechange::time_add(igor_origin, second = dateval)
   res
 }
 
