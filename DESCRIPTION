@@ -10,13 +10,14 @@ Authors@R: c(
 Description: Provides function to read data from the 'Igor Pro' data analysis
     program by Wavemetrics. The data formats supported are 'Igor' packed 
     experiment format (pxp) and 'Igor' binary wave (ibw). See: 
-    https://www.wavemetrics.com/ for details. Also includes functions to load 
+    <https://www.wavemetrics.com/> for details. Also includes functions to load 
     special pxp files produced by the 'Igor Pro' 'Neuromatic' and 'Nclamp' 
     packages for recording and analysing neuronal data. See 
-    https://github.com/SilverLabUCL/NeuroMatic for details.
+    <https://github.com/SilverLabUCL/NeuroMatic> for details.
 Imports:
     bitops,
-    tools
+    tools,
+    timechange
 Suggests:
     spelling,
     testthat
@@ -25,3 +26,5 @@ LazyLoad: yes
 RoxygenNote: 7.3.2
 Language: en-GB
 Encoding: UTF-8
+URL: https://github.com/jefferis/IgorR, https://jefferis.github.io/IgorR/
+BugReports: https://github.com/jefferis/IgorR/issues

@@ -338,12 +338,16 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
   i
 }
 
-igor_date_origin<-as.numeric(ISOdate(1904,1,1,hour=0,tz=""))
-
-.convertIgorDate<-function(dateval){
-  dateval=dateval+igor_date_origin
-  class(dateval)<-"POSIXct"
-  dateval
+# internal function to convert Igor dates
+# these are expressed in seconds since 1904-01-01 in the local timezone
+# note that we provide a tz argument to ensure that tests give the same
+# results regardless of the local timezone of the test machine
+.convertIgorDate<-function(dateval, tz=""){
+  igor_origin=ISOdatetime(1904,1,1,hour=0,min = 0, sec=0, tz=tz)
+  # this takes care of tz offset differences between the actual date and the origin
+  # e.g. because date is during daylight savings (but origin was not)
+  res=timechange::time_add(igor_origin, second = dateval)
+  res
 }
 
 # enum PackedFileRecordType {
@@ -402,24 +406,30 @@ NULL
   x
 }
 
+# private function to read a null terminated string
+.read_nt_string <- function(con, strlen) {
+  rawchars=readBin(con, what=raw(), n = strlen)
+  readBin(rawchars, what = 'character', n = 1)
+}
+
 .ReadPackedFile<-function(con, recordSize, encoding, Verbose){
 
   # discard first header part
   numBytes   = 32
-  readChar(con, numBytes)
+  res=readBin(con, what=raw(), n = numBytes)
   recordSize = recordSize - numBytes
 
   # read the filename
   file       = list()
-  file$name  = readChar(con, numBytes)
+  file$name  = .read_nt_string(con, numBytes)
   recordSize = recordSize - numBytes
 
   # discard last header part
   numBytes   = 90
-  readChar(con, numBytes)
+  readBin(con, what = raw(), n = numBytes)
   recordSize = recordSize - numBytes
 
-  file$data  = .readCharsWithEnc(con, recordSize, encoding)
+  file$data  = suppressWarnings(.readCharsWithEnc(con, recordSize, encoding))
 
   if(nchar(file$data) <= 1) { # assume it is a formatted notebook with custom binary header
 
@@ -763,21 +773,18 @@ if(R.version$major>2) {
     attr(WaveData,"Note")=.readCharsWithEnc(con,BinHeader5$noteSize,encoding)
   }
   
-  if(BinHeader5$dataEUnitsSize>0) {
-    attr(WaveData,"dataUnits")=.readNullTermString(con,BinHeader5$dataEUnitsSize,encoding)
-  }
+  # ignore dataEUnitsSize
+  if(BinHeader5$dataEUnitsSize>0)
+    readBin(con,what=raw(), n = BinHeader5$dataEUnitsSize)
   
-  if(any(BinHeader5$dimEUnitsSize>0)) {
-    x=.readCharsWithEnc(con,BinHeader5$dimEUnitsSize,encoding)
-    attr(WaveData,"dimUnits")[BinHeader5$dimEUnitsSize>0]=x[BinHeader5$dimEUnitsSize>0]
-  }
+  if(any(BinHeader5$dimEUnitsSize>0))
+    readBin(con,what=raw(), n = sum(BinHeader5$dimEUnitsSize))
+  
   # Trim units down to active dimensions
   attr(WaveData,"dimUnits")=attr(WaveData,"dimUnits")[WaveHeader5$nDim>0]
 
-  if(any(BinHeader5$dimLabelsSize>0)) {
-    x=.readCharsWithEnc(con,BinHeader5$dimLabelsSize,encoding)
-    attr(WaveData,"dimLabels")=x[WaveHeader5$nDim>0]
-  }
+  if(any(BinHeader5$dimLabelsSize>0))
+    readBin(con,what=raw(), n = sum(BinHeader5$dimLabelsSize))
   
   # Finish up
   # Re-dimension

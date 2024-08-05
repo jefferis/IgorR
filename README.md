@@ -1,8 +1,11 @@
 # IgorR
+<!-- badges: start -->
 [![DOI](https://img.shields.io/badge/doi-10.5281%2Fzenodo.10230-blue.svg)](http://dx.doi.org/10.5281/zenodo.10230) 
 [![Release Version](https://img.shields.io/github/release/jefferis/IgorR.svg)](https://github.com/jefferis/IgorR/releases/latest) 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/IgorR)](https://cran.r-project.org/package=IgorR) 
-[![Build Status](https://travis-ci.org/jefferis/IgorR.svg?branch=master)](https://travis-ci.org/jefferis/IgorR)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/IgorR)](https://cran.r-project.org/package=IgorR)
+[![R-CMD-check](https://github.com/jefferis/IgorR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jefferis/IgorR/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+  
 
 Introduction
 ============
