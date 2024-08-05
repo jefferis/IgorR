@@ -5,7 +5,8 @@ Version: 0.9.0
 Authors@R: c(
     person("Gregory","Jefferis", email="jefferis@gmail.com", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0587-9355")),
-    person("Thomas", "Braun", role = "ctb")
+    person("Thomas", "Braun", role = "ctb", 
+    comment = c(ORCID = "0000-0002-1416-2065"))
     )
 Description: Provides function to read data from the 'Igor Pro' data analysis
     program by Wavemetrics. The data formats supported are 'Igor' packed 
