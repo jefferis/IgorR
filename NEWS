@@ -1,3 +1,9 @@
+IgorR 0.9.0
+===========
+* fix: handling of Igor dates using timechange library (#6)
+* remove warnings due to recent changes in how readChar handles strings 
+  containing embedded nulls
+
 IgorR 0.8.2
 ===========
 * minor: package docs, spelling, author formatting
