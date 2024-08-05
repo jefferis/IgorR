@@ -1,28 +1,36 @@
 ## Changes since last CRAN release
 
-* fixes namespace issues resulting in NOTEs in current CRAN build
+* overhauls datetime handling to fix a test failure on macosx arm:
+
+  https://cran-archive.r-project.org/web/checks/2021/2021-10-05_check_results_IgorR.html
+
+  that I was unable to address back in 2021 resulting in archival. I have 
+  carried out cross-platform testing as below, so I am hopeful that there will
+  be no build issues on CRAN platforms.
+  
 * fixes some URLs in README
 
 ## Test environments
-* local OS X install, R 3.4.0
-* ubuntu 12.04 (on travis-ci), R 3.3.3
+
 * winbuilder (devel)
+* macbuilder (release)
+* local macosx install, R 4.4.1
+* github actions:
+  * macosx-latest
+  * ubuntu-latest (devel, release, oldrel-1)
+  * windows-latest
 
 ## R CMD check results
 There were no ERRORs or WARNINGs on any platform.
 
 There were 2 NOTEs on win-builder devel
 
-https://win-builder.r-project.org/2DwcN806anz3/00check.log
+https://win-builder.r-project.org/WVll9vnAQhs4/00check.log
 
 relating to 2 issues:
 
-1. Possibly mis-spelled words in DESCRIPTION:
-  Wavemetrics (9:16)
-  ibw (10:53)
-  pxp (10:24, 12:13)
-
-The first is a company name, the other two are file formats.
+1. X-CRAN-Comment: Archived on 2021-10-05 as check problems were not
+    corrected in time.
 
 2. * checking R code for possible problems ... NOTE
 Found the following assignments to the global environment:
