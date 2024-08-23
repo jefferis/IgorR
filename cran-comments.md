@@ -25,7 +25,7 @@ There were no ERRORs or WARNINGs on any platform.
 
 There were 2 NOTEs on win-builder devel
 
-https://win-builder.r-project.org/WVll9vnAQhs4/00check.log
+https://win-builder.r-project.org/4y3OYF9MRDBd/00check.log
 
 relating to 2 issues:
 
