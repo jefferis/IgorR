@@ -618,12 +618,23 @@ if(R.version$major>2) {
     x=NA; attr(x,"WaveHeader")=WaveHeader2
     return(x)
   }
-  # Note that only unsigned 16 bit data can be read by readBin
-  WaveData=myread( what=WaveTypeInfo$what,size=WaveTypeInfo$size,n=WaveHeader2$npts,
-    signed=(WaveTypeInfo$signAdjustment==0))
-  # Handle adjustment for unsigned integer data
-  if(WaveTypeInfo$signAdjustment!=0  && WaveTypeInfo$size>2){
-    WaveData=.ConvertIntToUInt(WaveData,WaveTypeInfo$signAdjustment)
+  # from C library 
+  # waveDataSize = wfmSize - offsetof(WaveHeader2, wData) - 16
+  
+  waveDataSize=BinHeader2$wfmSize - 110 - 16
+  numBytesToRead=WaveHeader2$npts * WaveTypeInfo$size
+  if(waveDataSize < numBytesToRead) {
+    # this is a formula wave 
+    if(Verbose) cat("Skipping formula wave: ", WaveHeader2$WaveName, "\n")
+    # could argue if this is sensible but it's what the C library does
+    WaveData=vector(mode = WaveTypeInfo$what, length = WaveHeader2$npts)
+  } else {
+    # Note that only unsigned 16 bit data can be read by readBin
+    WaveData=myread( what=WaveTypeInfo$what,size=WaveTypeInfo$size,n=WaveHeader2$npts,
+                     signed=(WaveTypeInfo$signAdjustment==0))
+    # Handle adjustment for unsigned integer data
+    if(WaveTypeInfo$signAdjustment!=0  && WaveTypeInfo$size>2)
+      WaveData=.ConvertIntToUInt(WaveData,WaveTypeInfo$signAdjustment)
   }
   
   # Finish up
