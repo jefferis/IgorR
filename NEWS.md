@@ -1,3 +1,12 @@
+# IgorR 0.10.0
+* Fix reading of complex waves (4b4ba89)
+* Experimental support for Igor Binary Waves v7 (#8)
+  (Unable to find any documentation so may be more work to do)
+* Support for Igor Binary Waves v3 (7e9a94b)
+* Fix reading of formula waves (8071fc8)
+
+**Full Changelog**: https://github.com/jefferis/IgorR/compare/v0.9...v0.10
+
 # IgorR 0.9.0
 * fix: handling of Igor dates using timechange library (#6)
 * remove warnings due to recent changes in how readChar handles strings 
