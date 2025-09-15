@@ -102,8 +102,8 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
       warning("Reading of Igor Binary File:", 
       summary(wavefile)$description, " with version: ",version, ' is experimental')
     rval=.ReadIgorBinary.V5(wavefile,Verbose=Verbose,endian=endian,HeaderOnly=HeaderOnly)
-  } else if(version==2){
-    rval=.ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,HeaderOnly=HeaderOnly)
+  } else if(version %in% c(2:3)) {
+    rval=.ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,HeaderOnly=HeaderOnly, version=version)
   } else stop(paste("Unable to read from Igor Binary File:",summary(wavefile)$description,"with
    version:",version))
   # Store Igor wave version number
@@ -551,7 +551,7 @@ if(R.version$major>2) {
   .myparse<-function(text) parse(text=text)
 }
 
-.ReadIgorBinary.V2<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
+.ReadIgorBinary.V2<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE, version=2){
   myread=function(what="integer",size=4,...) {
     if(what=='complex') size=NA_integer_
     readBin(con,endian=endian,what=what,size=size,...)
@@ -564,14 +564,17 @@ if(R.version$major>2) {
   # Read binary header 
   BinHeader2=list()
   BinHeader2$wfmSize=myread()
-  BinHeader2$noteSize=myread(); myread()
+  BinHeader2$noteSize=myread()
+  if(version==3) {
+    BinHeader2$formulaSize=myread()
+  }
+  myread()
   BinHeader2$checksum=myread(size=2)
 
   if(Verbose) print("Hello!")
   if(Verbose) print(BinHeader2)
   if(Verbose) print(BinHeader2)
   # Read WaveHeader
-  seek(con,where=startPos+16-2) # is this necessary?
   WaveHeader2=list()
   WaveHeader2$type=myread(what="raw",size=1,n=2)
   myread()
