@@ -33,7 +33,7 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item Thomas Braun [contributor]
+  \item Thomas Braun (\href{https://orcid.org/0000-0002-1416-2065}{ORCID}) [contributor]
 }
 
 }
