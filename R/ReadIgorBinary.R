@@ -552,7 +552,10 @@ if(R.version$major>2) {
 }
 
 .ReadIgorBinary.V2<-function(con,Verbose=FALSE,ReturnTimeSeries=NULL,endian=NULL,HeaderOnly=FALSE){
-  myread=function(what="integer",size=4,...) readBin(con,endian=endian,what=what,size=size,...)
+  myread=function(what="integer",size=4,...) {
+    if(what=='complex') size=NA_integer_
+    readBin(con,endian=endian,what=what,size=size,...)
+  }
   # File pointer should be positioned at the start of the header
   # this should be 2 bytes into the wave data 
   # (ie after endian and version bytes).  Store that position:

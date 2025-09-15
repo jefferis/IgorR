@@ -165,3 +165,8 @@ test_that("Read pxp can cope with invalid folder names", {
   pxp<-read.pxp("igor/bad_foldername4.pxp")
   expect_true("_default_" %in% names(pxp))
 })
+
+test_that("Read Igor complex wave in PXP", {
+  expect_silent(cmplx<-read.pxp(system.file('igor/VDT2_Tests_1.pxp', package = 'IgorR')))
+  expect_equal(mode(cmplx$cdw1), "complex")
+})
