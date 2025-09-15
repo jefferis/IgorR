@@ -97,12 +97,15 @@ read.ibw<-function(wavefile,Verbose=FALSE,ReturnTimeSeries=FALSE,
   }
   if(Verbose) cat("version = ",version,"endian = ",endian,"\n")
   
-  if(version==5) {
+  if(version>=5) {
+    if(version!=5)
+      warning("Reading of Igor Binary File:", 
+      summary(wavefile)$description, " with version: ",version, ' is experimental')
     rval=.ReadIgorBinary.V5(wavefile,Verbose=Verbose,endian=endian,HeaderOnly=HeaderOnly)
   } else if(version==2){
     rval=.ReadIgorBinary.V2(wavefile,Verbose=Verbose,endian=endian,HeaderOnly=HeaderOnly)
-  }
-  else stop(paste("Unable to read from Igor Binary File:",summary(wavefile)$description,"with version:",version))
+  } else stop(paste("Unable to read from Igor Binary File:",summary(wavefile)$description,"with
+   version:",version))
   # Store Igor wave version number
   attr(rval,'BinHeader')$version=version
   
@@ -220,7 +223,9 @@ read.pxp<-function(pxpfile,regex,ReturnTimeSeries=FALSE,Verbose=FALSE,
           # assume this is a wave name
           wavename=x
         }
-        el=paste(paste(currentNames,collapse="$"),sep="$",wavename)
+        # always backtick quote in case some wave names have reserved chars 
+        wavename2store=paste0('`', wavename, '`')
+        el=paste(paste(currentNames,collapse="$"),sep="$",wavename2store)
         # store the record if required
         if(missing(regex) || any( grep(regex,el) )){
           eval(.myparse(text=paste(el,"<-x")))
@@ -785,6 +790,12 @@ if(R.version$major>2) {
 
   if(any(BinHeader5$dimLabelsSize>0))
     readBin(con,what=raw(), n = sum(BinHeader5$dimLabelsSize))
+  
+  if(BinHeader5$optionsSize1>0) {
+    wn=readChar(con, nchars = BinHeader5$optionsSize1)
+    if(WaveHeader5$WaveName==':wave name too long:')
+      WaveHeader5$WaveName=wn
+  }
   
   # Finish up
   # Re-dimension
