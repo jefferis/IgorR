@@ -5,7 +5,7 @@
 * Support for Igor Binary Waves v3 (7e9a94b)
 * Fix reading of formula waves (8071fc8)
 
-**Full Changelog**: https://github.com/jefferis/IgorR/compare/v0.9...v0.10
+**Full Changelog**: https://github.com/jefferis/IgorR/compare/v0.9.0...v0.10.0
 
 # IgorR 0.9.0
 * fix: handling of Igor dates using timechange library (#6)
