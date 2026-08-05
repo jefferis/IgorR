@@ -58,7 +58,7 @@ test_that("Read Igor packed experiment file", {
       first5vars<-structure(list(sysVars = c(-2.2097864151001, -71.0904388427734, 
                   0.0737364292144775, -17.2362651824951, 0.504302203655243, 0, 
                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0), FileFormat = 1.91, 
-              FileDateTime = 3266426893, NumWaves = 100, TotalNumWaves = 200), .Names = c("sysVars", 
+              FileDateTime = 3266426893, NumWaves = 100, TotalNumWaves = 200), names = c("sysVars", 
               "FileFormat", "FileDateTime", "NumWaves", "TotalNumWaves"))
       expect_that(pxp$vars[1:5],
           equals(first5vars),'read in some Igor variables')

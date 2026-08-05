@@ -1,5 +1,6 @@
 # IgorR 0.10.0
 * Fix reading of complex waves (4b4ba89)
+* Replace deprecated special argument names in structure() test fixtures for R-devel.
 * Experimental support for Igor Binary Waves v7 (#8)
   (Unable to find any documentation so may be more work to do)
 * Support for Igor Binary Waves v3 (7e9a94b)
