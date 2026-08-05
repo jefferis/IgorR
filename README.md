@@ -36,7 +36,7 @@ remotes::install_github('jefferis/IgorR')
 Development Install
 -------------------
 To checkout a version that can be used for development 
-([RStudio](https://posit.co/products/open-source/rstudio/) is strongly recommended), 
+(Rstudio is strongly recommended), 
 in your terminal application.
 
 ```sh
