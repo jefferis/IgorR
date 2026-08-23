@@ -18,7 +18,7 @@ There were no ERRORs or WARNINGs on any platform.
 
 There was 1 NOTE on win-builder devel
 
-https://win-builder.r-project.org/OyigICeuuqIH/00check.log
+https://win-builder.r-project.org/CnC53yLMPpL6
 
 * checking R code for possible problems ... NOTE
 Found the following assignments to the global environment:
