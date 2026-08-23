@@ -12,5 +12,7 @@ export(tsp.igorwave)
 import(bitops)
 import(tools)
 importFrom(stats,ts)
-importFrom(utils,read.csv)
-importFrom(utils,write.csv)
+importFrom(utils,
+  read.csv,
+  write.csv
+)

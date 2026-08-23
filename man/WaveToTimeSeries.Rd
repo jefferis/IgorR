@@ -21,9 +21,9 @@ Where there are multiple waves, they are assumed to be of compatible lengths
 so that they can be joined together by \code{cbind}.
 }
 \seealso{
-Other igor-io: 
-\code{\link{read.ibw}()},
-\code{\link{read.pxp}()}
+Other igor-io:
+\code{\link[=read.ibw]{read.ibw()}},
+\code{\link[=read.pxp]{read.pxp()}}
 }
 \author{
 jefferis

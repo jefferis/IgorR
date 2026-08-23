@@ -45,9 +45,9 @@ wavename=read.ibw(system.file("igor","version5.ibw",package="IgorR"),MakeWave=TR
 sum(get(wavename))
 }
 \seealso{
-Other igor-io: 
-\code{\link{WaveToTimeSeries}()},
-\code{\link{read.pxp}()}
+Other igor-io:
+\code{\link[=WaveToTimeSeries]{WaveToTimeSeries()}},
+\code{\link[=read.pxp]{read.pxp()}}
 }
 \author{
 jefferis

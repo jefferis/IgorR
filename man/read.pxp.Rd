@@ -60,9 +60,9 @@ override the \code{IgorPlatform} argument.
 r=read.pxp(system.file("igor","testexpt.pxp",package="IgorR"))
 }
 \seealso{
-Other igor-io: 
-\code{\link{WaveToTimeSeries}()},
-\code{\link{read.ibw}()}
+Other igor-io:
+\code{\link[=WaveToTimeSeries]{WaveToTimeSeries()}},
+\code{\link[=read.ibw]{read.ibw()}}
 }
 \author{
 jefferis
