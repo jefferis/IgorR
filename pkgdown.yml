@@ -2,7 +2,7 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2026-08-23T16:53Z
+last_built: 2026-08-23T22:19Z
 urls:
   reference: https://jefferis.github.io/IgorR/reference
   article: https://jefferis.github.io/IgorR/articles
